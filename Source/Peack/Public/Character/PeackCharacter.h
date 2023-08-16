@@ -9,6 +9,10 @@
 class USpringArmComponent;
 class UCameraComponent;
 
+class UInputMappingContext;
+class UInputAction;
+struct FInputActionValue;
+
 UCLASS()
 class PEACK_API APeackCharacter : public ACharacter
 {
@@ -22,10 +26,22 @@ public: // Function
 protected:
 	virtual void BeginPlay() override;
 
+private: // Function
+	void SetupInputMappingContext();
+
 private: // Property
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> CameraComponent;
+
+	/*
+	* Input
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputMappingContext> IMC_Peack;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_Look;
 };

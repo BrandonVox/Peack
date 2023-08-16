@@ -6,6 +6,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
+
 // Sets default values
 APeackCharacter::APeackCharacter()
 {
@@ -31,13 +34,35 @@ APeackCharacter::APeackCharacter()
 void APeackCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
-// Called to bind functionality to input
 void APeackCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	// Enhanced Input
+
+	SetupInputMappingContext();
 }
+
+void APeackCharacter::SetupInputMappingContext()
+{
+	if ( APlayerController* MyPlayerController = Cast<APlayerController>(GetController()) )
+	{
+		ULocalPlayer* MyLocalPlayer = MyPlayerController->GetLocalPlayer();
+
+		UEnhancedInputLocalPlayerSubsystem* Subsystem =
+			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(MyLocalPlayer);
+
+		if (Subsystem)
+		{
+			Subsystem->AddMappingContext(IMC_Peack, 0);
+		}
+	}
+}
+
+
+
+
+
+
 
