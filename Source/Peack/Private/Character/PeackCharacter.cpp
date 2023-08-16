@@ -3,6 +3,9 @@
 
 #include "Character/PeackCharacter.h"
 
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+
 // Sets default values
 APeackCharacter::APeackCharacter()
 {
@@ -13,6 +16,15 @@ APeackCharacter::APeackCharacter()
 	// Adjust Mesh Component
 	GetMesh()->AddLocalOffset(FVector(0.0, 0.0, -88.0));
 	GetMesh()->AddLocalRotation(FRotator(0.0, -90.0, 0.0));
+
+	// Spring Arm
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Component"));
+	SpringArmComponent->SetupAttachment(GetRootComponent());
+
+	// Camera
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera Component"));
+	CameraComponent->SetupAttachment(SpringArmComponent);
+
 }
 
 // Called when the game starts or when spawned
