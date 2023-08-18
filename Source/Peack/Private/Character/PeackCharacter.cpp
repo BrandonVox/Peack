@@ -29,6 +29,11 @@ APeackCharacter::APeackCharacter()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera Component"));
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
+	// Net
+	NetUpdateFrequency = 100.0f;
+	MinNetUpdateFrequency = 100.0f;
+
+	// Tick Rate Server
 }
 
 // Called when the game starts or when spawned
