@@ -27,6 +27,7 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+	void Look(const FInputActionValue& Value);
 	void SetupInputMappingContext();
 
 private: // Property

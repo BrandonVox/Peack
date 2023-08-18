@@ -23,6 +23,7 @@ APeackCharacter::APeackCharacter()
 	// Spring Arm
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Component"));
 	SpringArmComponent->SetupAttachment(GetRootComponent());
+	SpringArmComponent->bUsePawnControlRotation = true;
 
 	// Camera
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera Component"));
@@ -42,6 +43,34 @@ void APeackCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	SetupInputMappingContext();
+
+	// Setup Input Action
+	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+
+	if (EnhancedInputComponent)
+	{
+		EnhancedInputComponent->BindAction(
+			IA_Look,
+			ETriggerEvent::Triggered,
+			this,
+			&ThisClass::Look
+		);
+	}
+}
+
+void APeackCharacter::Look(const FInputActionValue& Value)
+{
+	const FVector2D Value_Vector2D = Value.Get<FVector2D>();
+
+	if (Value_Vector2D.X != 0.0)
+	{
+		AddControllerYawInput(Value_Vector2D.X);
+	}
+
+	if (Value_Vector2D.Y != 0.0)
+	{
+		AddControllerPitchInput(Value_Vector2D.Y);
+	}
 }
 
 void APeackCharacter::SetupInputMappingContext()
