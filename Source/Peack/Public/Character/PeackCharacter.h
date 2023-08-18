@@ -27,6 +27,7 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void SetupInputMappingContext();
 
@@ -45,4 +46,7 @@ private: // Property
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_Look;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_Move;
 };

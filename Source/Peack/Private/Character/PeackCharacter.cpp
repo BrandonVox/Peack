@@ -55,6 +55,32 @@ void APeackCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 			this,
 			&ThisClass::Look
 		);
+
+		EnhancedInputComponent->BindAction(
+			IA_Move,
+			ETriggerEvent::Triggered,
+			this,
+			&ThisClass::Move
+		);
+	}
+}
+
+void APeackCharacter::Move(const FInputActionValue& Value)
+{
+	const FVector2D Value_Vector2D = Value.Get<FVector2D>();
+
+	const FRotator ControllerRotation = FRotator(0.0, GetControlRotation().Yaw, 0.0);
+
+	if (Value_Vector2D.Y != 0.0)
+	{
+		const FVector ForwardDirection = ControllerRotation.RotateVector(FVector::ForwardVector);
+		AddMovementInput(ForwardDirection, Value_Vector2D.Y);
+	}
+
+	if (Value_Vector2D.X != 0.0)
+	{
+		const FVector RightDirection = ControllerRotation.RotateVector(FVector::RightVector);
+		AddMovementInput(RightDirection, Value_Vector2D.X);
 	}
 }
 
