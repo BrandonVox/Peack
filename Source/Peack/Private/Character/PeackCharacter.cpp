@@ -33,7 +33,7 @@ APeackCharacter::APeackCharacter()
 	NetUpdateFrequency = 100.0f;
 	MinNetUpdateFrequency = 100.0f;
 
-	// Tick Rate Server
+	// Widget Component
 }
 
 // Called when the game starts or when spawned
@@ -41,6 +41,9 @@ void APeackCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ENetRole::ROLE_Authority;
+	ENetRole::ROLE_AutonomousProxy;
+	ENetRole::ROLE_SimulatedProxy;
 }
 
 void APeackCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
