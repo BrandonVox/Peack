@@ -9,6 +9,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 
+#include "Components/WidgetComponent.h"
+#include "Widget/LocalRoleWidget.h"
+
 // Sets default values
 APeackCharacter::APeackCharacter()
 {
@@ -34,6 +37,12 @@ APeackCharacter::APeackCharacter()
 	MinNetUpdateFrequency = 100.0f;
 
 	// Widget Component
+	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget Component"));
+	WidgetComponent->SetupAttachment(GetRootComponent());
+	// Z 90
+	WidgetComponent->AddLocalOffset(FVector(0.0, 0.0, 90.0));
+	WidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	WidgetComponent->SetDrawAtDesiredSize(true);
 }
 
 // Called when the game starts or when spawned
@@ -41,9 +50,37 @@ void APeackCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ENetRole::ROLE_Authority;
-	ENetRole::ROLE_AutonomousProxy;
-	ENetRole::ROLE_SimulatedProxy;
+	ShowLocalRole();
+}
+
+void APeackCharacter::ShowLocalRole()
+{
+	if (WidgetComponent == nullptr)
+	{
+		return;
+	}
+
+	ULocalRoleWidget* LRW = Cast<ULocalRoleWidget>(WidgetComponent->GetUserWidgetObject());
+
+	FText RoleText;
+
+	switch (GetLocalRole())
+	{
+	case ENetRole::ROLE_Authority:
+		RoleText = FText::FromString(TEXT("Authority"));
+		break;
+	case ENetRole::ROLE_AutonomousProxy:
+		RoleText = FText::FromString(TEXT("Autonomous Proxy"));
+		break;
+	case ENetRole::ROLE_SimulatedProxy:
+		RoleText = FText::FromString(TEXT("Simulated Proxy"));
+		break;
+	}
+
+	if (LRW)
+	{
+		LRW->UpdateText_Role(RoleText);
+	}
 }
 
 void APeackCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -72,6 +109,8 @@ void APeackCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		);
 	}
 }
+
+
 
 void APeackCharacter::Move(const FInputActionValue& Value)
 {

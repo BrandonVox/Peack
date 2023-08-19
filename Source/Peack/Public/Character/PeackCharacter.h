@@ -13,6 +13,8 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 
+class UWidgetComponent;
+
 UCLASS()
 class PEACK_API APeackCharacter : public ACharacter
 {
@@ -27,11 +29,15 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+	void ShowLocalRole();
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void SetupInputMappingContext();
 
 private: // Property
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UWidgetComponent> WidgetComponent;
+
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
