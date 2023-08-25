@@ -12,6 +12,8 @@
 #include "Components/WidgetComponent.h"
 #include "Widget/LocalRoleWidget.h"
 
+#include "Weapon/Weapon.h"
+
 // Sets default values
 APeackCharacter::APeackCharacter()
 {
@@ -51,6 +53,30 @@ void APeackCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	ShowLocalRole();
+
+	if (HasAuthority())
+	{
+		SpawnWeapon();
+	}
+}
+
+void APeackCharacter::SpawnWeapon()
+{
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+	SpawnParameters.Instigator = this;
+
+	AWeapon* SpawnedWeapon = GetWorld()->SpawnActor<AWeapon>(WeaponClass, SpawnParameters);
+
+	if (SpawnedWeapon)
+	{
+		FAttachmentTransformRules AttachmentRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
+		SpawnedWeapon->AttachToComponent(
+			GetMesh(),
+			AttachmentRules,
+			RifleSocketName
+		);
+	}
 }
 
 void APeackCharacter::ShowLocalRole()

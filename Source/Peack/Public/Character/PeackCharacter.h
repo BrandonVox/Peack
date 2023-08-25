@@ -15,6 +15,8 @@ struct FInputActionValue;
 
 class UWidgetComponent;
 
+class AWeapon;
+
 UCLASS()
 class PEACK_API APeackCharacter : public ACharacter
 {
@@ -29,12 +31,22 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+	void SpawnWeapon();
 	void ShowLocalRole();
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void SetupInputMappingContext();
 
 private: // Property
+	/*
+	* Weapon
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<AWeapon> WeaponClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	FName RifleSocketName;
+
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UWidgetComponent> WidgetComponent;
 
