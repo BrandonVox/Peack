@@ -101,6 +101,8 @@ void APeackCharacter::SpawnWeapon()
 	}
 }
 
+
+
 // Client
 void APeackCharacter::OnRep_CurrentWeapon()
 {
@@ -221,6 +223,18 @@ void APeackCharacter::Look(const FInputActionValue& Value)
 }
 
 void APeackCharacter::FireButtonPressed()
+{
+	Fire();
+}
+
+// Client, Server
+void APeackCharacter::Fire()
+{
+	Server_Fire();
+}
+
+// Server
+void APeackCharacter::Server_Fire_Implementation()
 {
 	if (CurrentWeapon)
 	{

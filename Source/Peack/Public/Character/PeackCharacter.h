@@ -33,6 +33,14 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+	/*
+	* Fire
+	*/
+	void Fire();
+
+	UFUNCTION(Server, Reliable)
+	void Server_Fire();
+
 	UFUNCTION()
 	void OnRep_CurrentWeapon();
 
