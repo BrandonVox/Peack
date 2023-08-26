@@ -222,7 +222,11 @@ void APeackCharacter::Look(const FInputActionValue& Value)
 
 void APeackCharacter::FireButtonPressed()
 {
-	PlayAnimMontage(FireMontage_Rifle);
+	if (CurrentWeapon)
+	{
+		PlayAnimMontage(FireMontage_Rifle);
+		CurrentWeapon->WeaponFire();
+	}
 }
 
 void APeackCharacter::SetupInputMappingContext()

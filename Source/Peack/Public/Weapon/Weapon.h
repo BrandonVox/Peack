@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -11,16 +10,20 @@ class PEACK_API AWeapon : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
+public:	// Function
 	AWeapon();
 	// virtual void Tick(float DeltaTime) override;
 
+	void WeaponFire();
+
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private: // Property
+
+	UPROPERTY(EditDefaultsOnly, Category = "Fire")
+	TObjectPtr<UAnimationAsset> AA_Fire;
+
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USkeletalMeshComponent> MeshComponent;
 

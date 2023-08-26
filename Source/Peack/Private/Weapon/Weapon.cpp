@@ -19,6 +19,14 @@ AWeapon::AWeapon()
 
 }
 
+void AWeapon::WeaponFire()
+{
+	if (MeshComponent)
+	{
+		MeshComponent->PlayAnimation(AA_Fire, false);
+	}
+}
+
 // Called when the game starts or when spawned
 void AWeapon::BeginPlay()
 {
