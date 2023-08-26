@@ -18,6 +18,9 @@ public:
 	
 protected:
 	UPROPERTY(BlueprintReadOnly)
+	float AO_Pitch = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly)
 	float StrafingValue = 0.0f;
 
 	UPROPERTY(BlueprintReadOnly)

@@ -29,4 +29,18 @@ void UPeackAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	const FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(Velocity);
 
 	StrafingValue = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation).Yaw;
+
+	/*
+	* Aim Offset
+	*/
+	AO_Pitch = AimRotation.Pitch;
+
+	if (!PeackCharacter->IsLocallyControlled() && AO_Pitch > 90.0f)
+	{
+		FVector2D InRange = FVector2D(270.0, 360.0);
+		FVector2D OutRange = FVector2D(-90.0, 0.0);
+
+		AO_Pitch = FMath::GetMappedRangeValueClamped(InRange, OutRange, AO_Pitch);
+	}
+
 }
