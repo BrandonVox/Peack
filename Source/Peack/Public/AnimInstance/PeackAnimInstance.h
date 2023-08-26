@@ -18,9 +18,15 @@ public:
 	
 protected:
 	UPROPERTY(BlueprintReadOnly)
+	float StrafingValue = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly)
 	float GroundSpeed = 0.0f;
 
 private:
+	UPROPERTY()
+	FVector Velocity;
+
 	UPROPERTY()
 	TObjectPtr<APeackCharacter> PeackCharacter;
 };

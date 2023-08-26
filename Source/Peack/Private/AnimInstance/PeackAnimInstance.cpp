@@ -18,5 +18,15 @@ void UPeackAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		return;
 	}
 
-	GroundSpeed = UKismetMathLibrary::VSizeXY(PeackCharacter->GetVelocity());
+	Velocity = PeackCharacter->GetVelocity();
+
+	GroundSpeed = UKismetMathLibrary::VSizeXY(Velocity);
+
+	/*
+	* Strafing Value
+	*/
+	const FRotator& AimRotation = PeackCharacter->GetBaseAimRotation();
+	const FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(Velocity);
+
+	StrafingValue = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation).Yaw;
 }
