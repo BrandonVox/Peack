@@ -23,6 +23,8 @@ class PEACK_API APeackCharacter : public ACharacter
 	GENERATED_BODY()
 
 public: // Function
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	APeackCharacter();
 	// virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -31,6 +33,9 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+	UFUNCTION()
+	void OnRep_CurrentWeapon();
+
 	void SpawnWeapon();
 	void ShowLocalRole();
 	void Move(const FInputActionValue& Value);
@@ -41,6 +46,10 @@ private: // Property
 	/*
 	* Weapon
 	*/
+
+	UPROPERTY(ReplicatedUsing = OnRep_CurrentWeapon)
+	TObjectPtr<AWeapon> CurrentWeapon;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<AWeapon> WeaponClass;
 

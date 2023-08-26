@@ -14,6 +14,10 @@
 
 #include "Weapon/Weapon.h"
 
+#include "Net/UnrealNetwork.h"
+
+
+
 // Sets default values
 APeackCharacter::APeackCharacter()
 {
@@ -47,6 +51,13 @@ APeackCharacter::APeackCharacter()
 	WidgetComponent->SetDrawAtDesiredSize(true);
 }
 
+void APeackCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(APeackCharacter, CurrentWeapon);
+}
+
 // Called when the game starts or when spawned
 void APeackCharacter::BeginPlay()
 {
@@ -60,6 +71,8 @@ void APeackCharacter::BeginPlay()
 	}
 }
 
+
+
 void APeackCharacter::SpawnWeapon()
 {
 	FActorSpawnParameters SpawnParameters;
@@ -70,13 +83,36 @@ void APeackCharacter::SpawnWeapon()
 
 	if (SpawnedWeapon)
 	{
-		FAttachmentTransformRules AttachmentRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
+		FAttachmentTransformRules AttachmentRules = 
+			FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
 		SpawnedWeapon->AttachToComponent(
 			GetMesh(),
 			AttachmentRules,
 			RifleSocketName
 		);
+		// NULL -> !!!
+		// Server -> Client
+		CurrentWeapon = SpawnedWeapon;
 	}
+}
+
+// Client
+void APeackCharacter::OnRep_CurrentWeapon()
+{
+	// khi bien currentweapon thay doi
+	// thi onrep se duoc goi
+	// server tahy doi current weapon
+	// thi server chuyen thong nay xuong cho cac client
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			-1,
+			3.0f,
+			FColor::Purple,
+			TEXT("OnRep_CurrentWeapon()")
+		);
+	}
+
 }
 
 void APeackCharacter::ShowLocalRole()
