@@ -16,6 +16,8 @@
 
 #include "Net/UnrealNetwork.h"
 
+#include "GameFramework/CharacterMovementComponent.h"
+
 
 
 // Sets default values
@@ -49,6 +51,9 @@ APeackCharacter::APeackCharacter()
 	WidgetComponent->AddLocalOffset(FVector(0.0, 0.0, 90.0));
 	WidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	WidgetComponent->SetDrawAtDesiredSize(true);
+
+	// Movement Component
+	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 }
 
 void APeackCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
