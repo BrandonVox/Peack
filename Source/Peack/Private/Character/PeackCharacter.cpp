@@ -174,6 +174,13 @@ void APeackCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 			this,
 			&ThisClass::Move
 		);
+
+		EnhancedInputComponent->BindAction(
+			IA_Fire,
+			ETriggerEvent::Triggered,
+			this,
+			&ThisClass::FireButtonPressed
+		);
 	}
 }
 
@@ -211,6 +218,11 @@ void APeackCharacter::Look(const FInputActionValue& Value)
 	{
 		AddControllerPitchInput(Value_Vector2D.Y);
 	}
+}
+
+void APeackCharacter::FireButtonPressed()
+{
+	PlayAnimMontage(FireMontage_Rifle);
 }
 
 void APeackCharacter::SetupInputMappingContext()

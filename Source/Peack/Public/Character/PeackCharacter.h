@@ -38,15 +38,25 @@ private: // Function
 
 	void SpawnWeapon();
 	void ShowLocalRole();
+
+	void SetupInputMappingContext();
+	/*
+	* Input
+	*/
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void SetupInputMappingContext();
+	void FireButtonPressed();
 
 private: // Property
 	/*
+	* Fire
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Fire")
+	TObjectPtr<UAnimMontage> FireMontage_Rifle;
+
+	/*
 	* Weapon
 	*/
-
 	UPROPERTY(ReplicatedUsing = OnRep_CurrentWeapon)
 	TObjectPtr<AWeapon> CurrentWeapon;
 
@@ -76,4 +86,7 @@ private: // Property
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_Move;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_Fire;
 };
