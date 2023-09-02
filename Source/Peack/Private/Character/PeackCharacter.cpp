@@ -232,11 +232,10 @@ void APeackCharacter::FireButtonPressed()
 	Fire();
 }
 
-// Client, Server
+// Client, Server, Local
 void APeackCharacter::Fire()
 {
 	Server_Fire();
-	LineTraceFromCamera();
 }
 
 void APeackCharacter::LineTraceFromCamera()
@@ -270,6 +269,7 @@ void APeackCharacter::LineTraceFromCamera()
 void APeackCharacter::Server_Fire_Implementation()
 {
 	Multicast_Fire();
+	LineTraceFromCamera();
 }
 
 // Client, Server
