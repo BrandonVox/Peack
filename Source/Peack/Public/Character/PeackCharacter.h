@@ -33,6 +33,7 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+	void LineTraceFromCamera();
 	/*
 	* Fire
 	*/
@@ -59,6 +60,11 @@ private: // Function
 	void FireButtonPressed();
 
 private: // Property
+	/*
+	* Trace Hit
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Trace Hit")
+	TArray<TEnumAsByte<EObjectTypeQuery>> TraceObjectTypes;
 	/*
 	* Fire
 	*/

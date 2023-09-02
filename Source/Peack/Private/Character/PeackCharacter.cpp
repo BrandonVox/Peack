@@ -18,6 +18,8 @@
 
 #include "GameFramework/CharacterMovementComponent.h"
 
+#include "Kismet/KismetSystemLibrary.h"
+
 
 
 // Sets default values
@@ -75,6 +77,8 @@ void APeackCharacter::BeginPlay()
 		SpawnWeapon();
 	}
 }
+
+
 
 
 
@@ -232,6 +236,34 @@ void APeackCharacter::FireButtonPressed()
 void APeackCharacter::Fire()
 {
 	Server_Fire();
+	LineTraceFromCamera();
+}
+
+void APeackCharacter::LineTraceFromCamera()
+{
+	if (CameraComponent == nullptr)
+	{
+		return;
+	}
+
+	const FVector& CameraLocation = CameraComponent->GetComponentLocation();
+	const FVector& CameraDirection = CameraComponent->GetForwardVector();
+	const FVector EndLocation = CameraLocation + (CameraDirection * 10'000'00);
+
+	TArray<AActor*> ActorsToIgnore;
+	FHitResult HitResult;
+
+	UKismetSystemLibrary::LineTraceSingleForObjects(
+		this,
+		CameraLocation,
+		EndLocation,
+		TraceObjectTypes,
+		false,
+		ActorsToIgnore,
+		EDrawDebugTrace::ForDuration,
+		HitResult,
+		true
+	);
 }
 
 // Server
