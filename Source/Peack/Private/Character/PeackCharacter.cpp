@@ -22,6 +22,9 @@
 
 #include "Controller/PeackPlayerController.h"
 
+#include "Kismet/GameplayStatics.h"
+
+
 
 
 // Sets default values
@@ -60,6 +63,7 @@ APeackCharacter::APeackCharacter()
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 
 	// Set Object Type
+	// ECollisionChannel::ECC_GameTraceChannel1 = CustomCharacterMesh
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel1);
 }
 
@@ -262,7 +266,7 @@ void APeackCharacter::Fire()
 }
 
 
-
+// Server
 void APeackCharacter::LineTraceFromCamera()
 {
 	if (CameraComponent == nullptr)
@@ -277,7 +281,7 @@ void APeackCharacter::LineTraceFromCamera()
 	TArray<AActor*> ActorsToIgnore;
 	FHitResult HitResult;
 
-	UKismetSystemLibrary::LineTraceSingleForObjects(
+	const bool bDoHit = UKismetSystemLibrary::LineTraceSingleForObjects(
 		this,
 		CameraLocation,
 		EndLocation,
@@ -288,6 +292,23 @@ void APeackCharacter::LineTraceFromCamera()
 		HitResult,
 		true
 	);
+
+	// Server
+	if (bDoHit)
+	{
+
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			HitEffect,
+			HitResult.ImpactPoint
+		);
+
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			HitSound,
+			HitResult.ImpactPoint
+		);
+	}
 }
 
 // Server

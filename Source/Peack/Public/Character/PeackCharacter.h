@@ -65,11 +65,19 @@ private: // Function
 	void FireButtonPressed();
 
 private: // Property
+
 	/*
 	* Trace Hit
 	*/
 	UPROPERTY(EditDefaultsOnly, Category = "Trace Hit")
 	TArray<TEnumAsByte<EObjectTypeQuery>> TraceObjectTypes;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Trace Hit")
+	TObjectPtr<UParticleSystem> HitEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Trace Hit")
+	TObjectPtr<USoundBase> HitSound;
+
 	/*
 	* Fire
 	*/
