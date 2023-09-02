@@ -41,6 +41,9 @@ private: // Function
 	UFUNCTION(Server, Reliable)
 	void Server_Fire();
 
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_Fire();
+
 	UFUNCTION()
 	void OnRep_CurrentWeapon();
 

@@ -103,6 +103,7 @@ void APeackCharacter::SpawnWeapon()
 
 
 
+
 // Client
 void APeackCharacter::OnRep_CurrentWeapon()
 {
@@ -235,6 +236,12 @@ void APeackCharacter::Fire()
 
 // Server
 void APeackCharacter::Server_Fire_Implementation()
+{
+	Multicast_Fire();
+}
+
+// Client, Server
+void APeackCharacter::Multicast_Fire_Implementation()
 {
 	if (CurrentWeapon)
 	{
