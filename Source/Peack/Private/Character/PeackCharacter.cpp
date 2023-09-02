@@ -58,6 +58,9 @@ APeackCharacter::APeackCharacter()
 
 	// Movement Component
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+
+	// Set Object Type
+	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel1);
 }
 
 // Server
