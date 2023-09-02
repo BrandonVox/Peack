@@ -23,6 +23,8 @@ class PEACK_API APeackCharacter : public ACharacter
 	GENERATED_BODY()
 
 public: // Function
+	virtual void PossessedBy(AController* NewController) override;
+
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	APeackCharacter();
@@ -33,6 +35,9 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+	UFUNCTION(Client, Reliable)
+	void Client_PlayerControllerReady();
+
 	void LineTraceFromCamera();
 	/*
 	* Fire

@@ -20,6 +20,8 @@
 
 #include "Kismet/KismetSystemLibrary.h"
 
+#include "Controller/PeackPlayerController.h"
+
 
 
 // Sets default values
@@ -56,6 +58,24 @@ APeackCharacter::APeackCharacter()
 
 	// Movement Component
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+}
+
+// Server
+// 3 Player Controller
+// 1 Player Controller cua Server
+void APeackCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	Client_PlayerControllerReady();
+}
+
+void APeackCharacter::Client_PlayerControllerReady_Implementation()
+{
+	if (APeackPlayerController* PeackPlayerController = Cast<APeackPlayerController>(GetController()))
+	{
+		PeackPlayerController->CreateWidget_Character();
+	}
 }
 
 void APeackCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -237,6 +257,8 @@ void APeackCharacter::Fire()
 {
 	Server_Fire();
 }
+
+
 
 void APeackCharacter::LineTraceFromCamera()
 {
