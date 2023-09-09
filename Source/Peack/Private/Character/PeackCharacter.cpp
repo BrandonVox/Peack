@@ -340,14 +340,20 @@ void APeackCharacter::LineTraceFromCamera()
 
 	const FVector& CameraLocation = CameraComponent->GetComponentLocation();
 	const FVector& CameraDirection = CameraComponent->GetForwardVector();
-	const FVector EndLocation = CameraLocation + (CameraDirection * 10'000'00);
+
+	// distance camera <-> character
+	const float TraceStartOffset = 
+		FVector::Distance(CameraLocation, GetActorLocation()) + TraceHitOffset;
+
+	const FVector StartLocation = CameraLocation + (CameraDirection * TraceStartOffset);
+	const FVector EndLocation = StartLocation + (CameraDirection * 10'000'00);
 
 	TArray<AActor*> ActorsToIgnore;
 	FHitResult HitResult;
 
 	const bool bDoHit = UKismetSystemLibrary::LineTraceSingleForObjects(
 		this,
-		CameraLocation,
+		StartLocation,
 		EndLocation,
 		TraceObjectTypes,
 		false,

@@ -120,6 +120,9 @@ private: // Property
 	UPROPERTY(EditDefaultsOnly, Category = "Trace Hit")
 	TObjectPtr<USoundBase> HitSound;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Trace Hit")
+	float TraceHitOffset = 50.0f;
+
 	/*
 	* Fire
 	*/
