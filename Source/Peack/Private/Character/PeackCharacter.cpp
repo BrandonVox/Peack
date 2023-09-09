@@ -83,6 +83,8 @@ void APeackCharacter::BeginPlay()
 
 
 
+
+
 // Server
 void APeackCharacter::HandleTakePointDamage(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation, UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const UDamageType* DamageType, AActor* DamageCauser)
 {
@@ -96,12 +98,44 @@ void APeackCharacter::HandleTakePointDamage(AActor* DamagedActor, float Damage, 
 		);
 	}
 
-	Multicast_PlayHitReactMontage();
+	Multicast_PlayHitReactMontage(ShotFromDirection);
 }
 
-void APeackCharacter::Multicast_PlayHitReactMontage_Implementation() // implementation
+void APeackCharacter::Multicast_PlayHitReactMontage_Implementation(const FVector& HitDirection)
 {
-	PlayAnimMontage(HitReactMontage_Front);
+	PlayAnimMontage(GetCorrectHitReactMontage(HitDirection));
+}
+
+UAnimMontage* APeackCharacter::GetCorrectHitReactMontage(const FVector& HitDirection) const
+{
+	double Dot = FVector::DotProduct(HitDirection, GetActorForwardVector());
+	bool bShouldUseDot = FMath::Abs(Dot) > 0.5;
+
+	if (bShouldUseDot)
+	{
+		if (Dot > 0.0)
+		{
+			return HitReactMontage_Back;
+		}
+		else
+		{
+			return HitReactMontage_Front;
+		}
+	}
+	else
+	{
+		const FVector Cross = FVector::CrossProduct(HitDirection, GetActorForwardVector());
+		if (Cross.Z > 0.0)
+		{
+			return HitReactMontage_Right;
+		}
+		else
+		{
+			return HitReactMontage_Left;
+		}
+	}
+
+	return nullptr;
 }
 
 // Server

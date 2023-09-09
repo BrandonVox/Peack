@@ -36,8 +36,10 @@ protected:
 
 private: // Function
 
+	UAnimMontage* GetCorrectHitReactMontage(const FVector& HitDirection) const;
+
 	UFUNCTION(NetMulticast, Reliable)
-	void Multicast_PlayHitReactMontage();
+	void Multicast_PlayHitReactMontage(const FVector& HitDirection);
 
 	UFUNCTION()
 	void HandleTakePointDamage(
