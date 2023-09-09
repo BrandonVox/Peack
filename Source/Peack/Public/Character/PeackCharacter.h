@@ -35,6 +35,10 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_SpawnHitEffect(const FVector& HitLocation);
+
 	UFUNCTION(Client, Reliable)
 	void Client_PlayerControllerReady();
 

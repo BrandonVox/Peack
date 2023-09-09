@@ -109,6 +109,8 @@ void APeackCharacter::BeginPlay()
 
 
 
+
+
 void APeackCharacter::SpawnWeapon()
 {
 	FActorSpawnParameters SpawnParameters;
@@ -296,19 +298,24 @@ void APeackCharacter::LineTraceFromCamera()
 	// Server
 	if (bDoHit)
 	{
-
-		UGameplayStatics::SpawnEmitterAtLocation(
-			GetWorld(),
-			HitEffect,
-			HitResult.ImpactPoint
-		);
-
-		UGameplayStatics::PlaySoundAtLocation(
-			this,
-			HitSound,
-			HitResult.ImpactPoint
-		);
+		Multicast_SpawnHitEffect(HitResult.ImpactPoint);
 	}
+}
+
+void APeackCharacter::Multicast_SpawnHitEffect_Implementation(const FVector& HitLocation) // Implementation
+{
+	// Hit Location
+	UGameplayStatics::SpawnEmitterAtLocation(
+		GetWorld(),
+		HitEffect,
+		HitLocation
+	);
+
+	UGameplayStatics::PlaySoundAtLocation(
+		this,
+		HitSound,
+		HitLocation
+	);
 }
 
 // Server
@@ -343,10 +350,3 @@ void APeackCharacter::SetupInputMappingContext()
 		}
 	}
 }
-
-
-
-
-
-
-
