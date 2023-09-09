@@ -81,6 +81,8 @@ void APeackCharacter::BeginPlay()
 	}
 }
 
+
+
 // Server
 void APeackCharacter::HandleTakePointDamage(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation, UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const UDamageType* DamageType, AActor* DamageCauser)
 {
@@ -94,6 +96,12 @@ void APeackCharacter::HandleTakePointDamage(AActor* DamagedActor, float Damage, 
 		);
 	}
 
+	Multicast_PlayHitReactMontage();
+}
+
+void APeackCharacter::Multicast_PlayHitReactMontage_Implementation() // implementation
+{
+	PlayAnimMontage(HitReactMontage_Front);
 }
 
 // Server

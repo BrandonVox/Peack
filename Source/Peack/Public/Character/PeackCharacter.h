@@ -35,6 +35,10 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayHitReactMontage();
+
 	UFUNCTION()
 	void HandleTakePointDamage(
 		AActor* DamagedActor,
@@ -82,6 +86,20 @@ private: // Function
 	void FireButtonPressed();
 
 private: // Property
+	/*
+	* Hit React
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Hit React")
+	TObjectPtr<UAnimMontage> HitReactMontage_Front;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Hit React")
+	TObjectPtr<UAnimMontage> HitReactMontage_Back;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Hit React")
+	TObjectPtr<UAnimMontage> HitReactMontage_Right;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Hit React")
+	TObjectPtr<UAnimMontage> HitReactMontage_Left;
 
 	/*
 	* Trace Hit
