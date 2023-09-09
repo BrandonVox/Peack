@@ -36,6 +36,8 @@ protected:
 
 private: // Function
 
+	void FireDelayFinished();
+
 	UAnimMontage* GetCorrectHitReactMontage(const FVector& HitDirection) const;
 
 	UFUNCTION(NetMulticast, Reliable)
@@ -88,6 +90,9 @@ private: // Function
 	void FireButtonPressed();
 
 private: // Property
+
+	// Server
+	bool bIsFiring = false;
 	/*
 	* Hit React
 	*/
@@ -120,6 +125,12 @@ private: // Property
 	*/
 	UPROPERTY(EditDefaultsOnly, Category = "Fire")
 	TObjectPtr<UAnimMontage> FireMontage_Rifle;
+
+	UPROPERTY()
+	FTimerHandle FireDelayTimer;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Fire")
+	float FireRate = 2.0f;
 
 	/*
 	* Weapon

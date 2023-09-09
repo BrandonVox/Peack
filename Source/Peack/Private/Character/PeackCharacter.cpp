@@ -106,6 +106,8 @@ void APeackCharacter::Multicast_PlayHitReactMontage_Implementation(const FVector
 	PlayAnimMontage(GetCorrectHitReactMontage(HitDirection));
 }
 
+
+
 UAnimMontage* APeackCharacter::GetCorrectHitReactMontage(const FVector& HitDirection) const
 {
 	double Dot = FVector::DotProduct(HitDirection, GetActorForwardVector());
@@ -404,8 +406,33 @@ void APeackCharacter::Multicast_SpawnHitEffect_Implementation(const FVector& Hit
 // Server
 void APeackCharacter::Server_Fire_Implementation()
 {
+	if (bIsFiring)
+	{
+		return;
+	}
+
 	Multicast_Fire();
 	LineTraceFromCamera();
+	bIsFiring = true;
+
+	FTimerManager& WorldTimerManager = GetWorldTimerManager();
+
+	if (WorldTimerManager.IsTimerActive(FireDelayTimer))
+	{
+		WorldTimerManager.ClearTimer(FireDelayTimer);
+	}
+
+	WorldTimerManager.SetTimer(
+		FireDelayTimer,
+		this,
+		&ThisClass::FireDelayFinished,
+		1.0f / FireRate
+	);
+}
+
+void APeackCharacter::FireDelayFinished()
+{
+	bIsFiring = false;
 }
 
 // Client, Server
