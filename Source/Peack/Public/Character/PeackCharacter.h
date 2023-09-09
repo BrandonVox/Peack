@@ -17,6 +17,8 @@ class UWidgetComponent;
 
 class AWeapon;
 
+class APeackPlayerController;
+
 UCLASS()
 class PEACK_API APeackCharacter : public ACharacter
 {
@@ -35,6 +37,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+	UFUNCTION()
+	void OnRep_Health();
 
 	void FireDelayFinished();
 
@@ -90,10 +94,17 @@ private: // Function
 	void FireButtonPressed();
 
 private: // Property
+	UPROPERTY()
+	TObjectPtr<APeackPlayerController> PeackPlayerController;
+
 	/*
 	* Health
 	*/
-	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	UPROPERTY(
+		EditDefaultsOnly,
+		Category = "Health",
+		ReplicatedUsing = OnRep_Health
+	)
 	float Health = 100.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Health")

@@ -88,17 +88,40 @@ void APeackCharacter::BeginPlay()
 // Server
 void APeackCharacter::HandleTakePointDamage(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation, UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const UDamageType* DamageType, AActor* DamageCauser)
 {
+	Health = FMath::Max(Health - Damage, 0.0f);
+
+	// server control this character
+	if (IsLocallyControlled())
+	{
+		if (PeackPlayerController)
+		{
+			PeackPlayerController->UpdateBar_Health(Health, MaxHealth);
+		}
+	}
+
+	Multicast_PlayHitReactMontage(ShotFromDirection);
+}
+
+// 100 -> 80
+// 0 -> 0
+// Client who controlled this character
+void APeackCharacter::OnRep_Health()
+{
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(
 			-1,
 			2.0f,
-			FColor::Red,
-			TEXT("HandleTakePointDamage")
+			FColor::Blue,
+			TEXT("OnRep_Health()")
 		);
 	}
 
-	Multicast_PlayHitReactMontage(ShotFromDirection);
+	if (PeackPlayerController)
+	{
+		PeackPlayerController->UpdateBar_Health(Health, MaxHealth);
+	}
+
 }
 
 void APeackCharacter::Multicast_PlayHitReactMontage_Implementation(const FVector& HitDirection)
@@ -153,7 +176,7 @@ void APeackCharacter::PossessedBy(AController* NewController)
 // Local: Client, Server
 void APeackCharacter::Client_PlayerControllerReady_Implementation()
 {
-	if (APeackPlayerController* PeackPlayerController = Cast<APeackPlayerController>(GetController()))
+	if (PeackPlayerController = Cast<APeackPlayerController>(GetController()))
 	{
 		PeackPlayerController->CreateWidget_Character();
 		// Update Health Bar
@@ -166,6 +189,10 @@ void APeackCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(APeackCharacter, CurrentWeapon);
+	// tat ca client
+	// dang dieu khien nhan vat
+	// dieu kien
+	DOREPLIFETIME_CONDITION(APeackCharacter, Health, COND_OwnerOnly);
 }
 
 
@@ -438,6 +465,8 @@ void APeackCharacter::Server_Fire_Implementation()
 		1.0f / FireRate
 	);
 }
+
+
 
 void APeackCharacter::FireDelayFinished()
 {
