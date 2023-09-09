@@ -35,6 +35,18 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+	UFUNCTION()
+	void HandleTakePointDamage(
+		AActor* DamagedActor,
+		float Damage,
+		class AController* InstigatedBy,
+		FVector HitLocation,
+		class UPrimitiveComponent* FHitComponent,
+		FName BoneName,
+		FVector ShotFromDirection,
+		const class UDamageType* DamageType,
+		AActor* DamageCauser
+	);
 
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_SpawnHitEffect(const FVector& HitLocation);

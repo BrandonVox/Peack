@@ -67,6 +67,35 @@ APeackCharacter::APeackCharacter()
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel1);
 }
 
+// Called when the game starts or when spawned
+void APeackCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	ShowLocalRole();
+
+	if (HasAuthority())
+	{
+		SpawnWeapon();
+		OnTakePointDamage.AddDynamic(this, &ThisClass::HandleTakePointDamage);
+	}
+}
+
+// Server
+void APeackCharacter::HandleTakePointDamage(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation, UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const UDamageType* DamageType, AActor* DamageCauser)
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			-1,
+			2.0f,
+			FColor::Red,
+			TEXT("HandleTakePointDamage")
+		);
+	}
+
+}
+
 // Server
 // 3 Player Controller
 // 1 Player Controller cua Server
@@ -92,18 +121,7 @@ void APeackCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME(APeackCharacter, CurrentWeapon);
 }
 
-// Called when the game starts or when spawned
-void APeackCharacter::BeginPlay()
-{
-	Super::BeginPlay();
 
-	ShowLocalRole();
-
-	if (HasAuthority())
-	{
-		SpawnWeapon();
-	}
-}
 
 
 
