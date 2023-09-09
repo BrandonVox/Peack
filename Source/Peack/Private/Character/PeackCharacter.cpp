@@ -150,11 +150,14 @@ void APeackCharacter::PossessedBy(AController* NewController)
 	Client_PlayerControllerReady();
 }
 
+// Local: Client, Server
 void APeackCharacter::Client_PlayerControllerReady_Implementation()
 {
 	if (APeackPlayerController* PeackPlayerController = Cast<APeackPlayerController>(GetController()))
 	{
 		PeackPlayerController->CreateWidget_Character();
+		// Update Health Bar
+		PeackPlayerController->UpdateBar_Health(Health, MaxHealth);
 	}
 }
 

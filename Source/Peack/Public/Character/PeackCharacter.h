@@ -90,6 +90,14 @@ private: // Function
 	void FireButtonPressed();
 
 private: // Property
+	/*
+	* Health
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	float Health = 100.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	float MaxHealth = 100.0f;
 
 	// Server
 	bool bIsFiring = false;

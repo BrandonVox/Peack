@@ -2,7 +2,9 @@
 
 
 #include "Controller/PeackPlayerController.h"
-#include "Blueprint/UserWidget.h"
+#include "Widget/CharacterWidget.h"
+
+
 
 void APeackPlayerController::CreateWidget_Character()
 {
@@ -11,9 +13,18 @@ void APeackPlayerController::CreateWidget_Character()
 		return;
 	}
 
-	Widget_Character = CreateWidget<UUserWidget>(this, WidgetClass_Character);
+	Widget_Character = CreateWidget<UCharacterWidget>(this, WidgetClass_Character);
 	if (Widget_Character)
 	{
 		Widget_Character->AddToViewport();
+	}
+}
+
+// update health bar
+void APeackPlayerController::UpdateBar_Health(float Health, float MaxHealth)
+{
+	if (Widget_Character)
+	{
+		Widget_Character->UpdateBar_Health(Health, MaxHealth);
 	}
 }
