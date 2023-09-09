@@ -299,6 +299,29 @@ void APeackCharacter::LineTraceFromCamera()
 	if (bDoHit)
 	{
 		Multicast_SpawnHitEffect(HitResult.ImpactPoint);
+
+		ApplyDamageToPeackCharacter(HitResult, CameraDirection);
+	}
+}
+
+// Server
+void APeackCharacter::ApplyDamageToPeackCharacter(const FHitResult& HitResult, const FVector& HitDirection)
+{
+	// gay sat thuong
+	APeackCharacter* DamagedCharacter = Cast<APeackCharacter>(HitResult.GetActor());
+	if (DamagedCharacter)
+	{
+		// apply point damage
+		// gameplay statics
+		UGameplayStatics::ApplyPointDamage(
+			DamagedCharacter,
+			20.0f,
+			HitDirection,
+			HitResult,
+			GetController(),
+			CurrentWeapon,
+			UDamageType::StaticClass()
+		);
 	}
 }
 

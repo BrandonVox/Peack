@@ -43,6 +43,7 @@ private: // Function
 	void Client_PlayerControllerReady();
 
 	void LineTraceFromCamera();
+	void ApplyDamageToPeackCharacter(const FHitResult& HitResult, const FVector& HitDirection);
 	/*
 	* Fire
 	*/
