@@ -161,6 +161,15 @@ void APeackCharacter::Client_HandleDead_Implementation() // Implementation
 	}
 
 	DisableInput(PeackPlayerController);
+
+	if (CameraComponent)
+	{
+		CameraComponent->AttachToComponent(
+			GetMesh(),
+			FAttachmentTransformRules::KeepWorldTransform
+		);
+	}
+
 }
 
 // 100 -> 80
