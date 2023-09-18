@@ -13,6 +13,7 @@ AWeapon::AWeapon()
 
 	// Mesh Component
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh Component"));
+	SetRootComponent(MeshComponent);
 
 	// Cosmetic
 	MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);

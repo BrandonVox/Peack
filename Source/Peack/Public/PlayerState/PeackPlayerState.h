@@ -14,12 +14,20 @@ class PEACK_API APeackPlayerState : public APlayerState
 {
 	GENERATED_BODY()
 
+public: // Function
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
+
 protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+	UFUNCTION()
+	void OnRep_Ready();
+
 	bool IsLocallyControlled() const;
 
 private: // Property
+
+	UPROPERTY(ReplicatedUsing = OnRep_Ready)
 	bool bReady = false;
 };
