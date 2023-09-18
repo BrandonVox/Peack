@@ -14,6 +14,9 @@ class PEACK_API APeackPlayerState : public APlayerState
 	GENERATED_BODY()
 
 public: // Function
+	APeackPlayerState();
+
+	virtual void OnRep_Score() override;
 
 	void AddOne_Score();
 

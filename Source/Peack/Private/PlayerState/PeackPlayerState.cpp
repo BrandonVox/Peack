@@ -7,13 +7,35 @@
 
 #include "Net/UnrealNetwork.h"
 
+
+APeackPlayerState::APeackPlayerState()
+{
+	NetUpdateFrequency = 5.0f;
+	MinNetUpdateFrequency = 5.0f;
+}
+
 // Server
 void APeackPlayerState::AddOne_Score()
 {
 	SetScore(GetScore() + 1.0f);
+	// Server (Score) -> Client
+	// OnRep Override
 
 	// Server
 	// PC owning this player controller?
+	if (IsLocallyControlled())
+	{
+		UpdateText_Score();
+	}
+}
+
+
+
+// Client
+void APeackPlayerState::OnRep_Score()
+{
+	Super::OnRep_Score();
+
 	if (IsLocallyControlled())
 	{
 		UpdateText_Score();
