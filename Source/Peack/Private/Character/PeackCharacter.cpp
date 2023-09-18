@@ -24,6 +24,8 @@
 
 #include "Kismet/GameplayStatics.h"
 
+#include "Components/CapsuleComponent.h"
+
 
 
 
@@ -93,13 +95,63 @@ void APeackCharacter::HandleTakePointDamage(AActor* DamagedActor, float Damage, 
 	// server control this character
 	if (IsLocallyControlled())
 	{
-		if (PeackPlayerController)
-		{
-			PeackPlayerController->UpdateBar_Health(Health, MaxHealth);
-		}
+		OnRep_Health();
 	}
 
-	Multicast_PlayHitReactMontage(ShotFromDirection);
+	if (Health > 0.0f)
+	{
+		Multicast_PlayHitReactMontage(ShotFromDirection);
+	}
+	else
+	{
+		// handle dead
+		HandleDead();
+	}
+}
+
+// Server
+void APeackCharacter::HandleDead()
+{
+	// Disable Movement
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->StopMovementImmediately();
+		GetCharacterMovement()->DisableMovement();
+	}
+
+	Multicast_HandleDead();
+	Client_HandleDead();
+}
+
+// Cient, Server
+void APeackCharacter::Multicast_HandleDead_Implementation() // 
+{
+	// Multicast
+// Mesh Component
+// simulate phyics
+	if (GetMesh())
+	{
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+		GetMesh()->SetSimulatePhysics(true);
+		GetMesh()->SetPhysicsBlendWeight(1.0f);
+	}
+
+	// capsule component
+	// disable
+	if (GetCapsuleComponent())
+	{
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+
+void APeackCharacter::Client_HandleDead_Implementation() // Implementation
+{
+	if (PeackPlayerController == nullptr)
+	{
+		PeackPlayerController = Cast<APeackPlayerController>(GetController());
+	}
+
+	DisableInput(PeackPlayerController);
 }
 
 // 100 -> 80
@@ -107,16 +159,6 @@ void APeackCharacter::HandleTakePointDamage(AActor* DamagedActor, float Damage, 
 // Client who controlled this character
 void APeackCharacter::OnRep_Health()
 {
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(
-			-1,
-			2.0f,
-			FColor::Blue,
-			TEXT("OnRep_Health()")
-		);
-	}
-
 	if (PeackPlayerController)
 	{
 		PeackPlayerController->UpdateBar_Health(Health, MaxHealth);

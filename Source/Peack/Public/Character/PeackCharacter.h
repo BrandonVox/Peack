@@ -37,6 +37,15 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+
+	void HandleDead();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_HandleDead();
+
+	UFUNCTION(Client, Reliable)
+	void Client_HandleDead();
+
 	UFUNCTION()
 	void OnRep_Health();
 
