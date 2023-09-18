@@ -8,21 +8,36 @@
 
 class UCharacterWidget;
 
+class UPlayerStateWidget;
+
 UCLASS()
 class PEACK_API APeackPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
 public: // Function
+	void PlayerStateReady();
 	void UpdateBar_Health(float Health, float MaxHealth);
 	void CreateWidget_Character();
 
+	void CreateWidget_PlayerState();
+
 private: // Property
+	/*
+	* Character Widget
+	*/
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 	TSubclassOf<UCharacterWidget> WidgetClass_Character;
 
 	UPROPERTY()
 	TObjectPtr<UCharacterWidget> Widget_Character;
 
-	// Character Widget
+	/*
+	* PlayerState Widget
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	TSubclassOf<UPlayerStateWidget> WidgetClass_PlayerState;
+
+	UPROPERTY()
+	TObjectPtr<UPlayerStateWidget> Widget_PlayerState;
 };

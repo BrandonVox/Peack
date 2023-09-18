@@ -13,5 +13,13 @@ UCLASS()
 class PEACK_API APeackPlayerState : public APlayerState
 {
 	GENERATED_BODY()
-	
+
+protected:
+	virtual void BeginPlay() override;
+
+private: // Function
+	bool IsLocallyControlled() const;
+
+private: // Property
+	bool bReady = false;
 };
