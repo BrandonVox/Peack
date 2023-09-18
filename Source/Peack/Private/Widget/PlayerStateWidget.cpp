@@ -17,3 +17,16 @@ void UPlayerStateWidget::UpdateText_Score(float GivenScore)
 		Text_Score->SetText(FText::FromString(NewString));
 	}
 }
+
+void UPlayerStateWidget::UpdateText_Death(float GivenDeath)
+{
+	FString NewString = FString::Printf(
+		TEXT("%d"),
+		FMath::FloorToInt(GivenDeath)
+	);
+
+	if (Text_Death)
+	{
+		Text_Death->SetText(FText::FromString(NewString));
+	}
+}
