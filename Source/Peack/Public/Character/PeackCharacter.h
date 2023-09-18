@@ -19,6 +19,8 @@ class AWeapon;
 
 class APeackPlayerController;
 
+class APeackGameMode;
+
 UCLASS()
 class PEACK_API APeackCharacter : public ACharacter
 {
@@ -39,6 +41,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private: // Function
+
+	APeackGameMode* GetAuthPeackGameMode() const;
 
 	void RequestRespawn();
 

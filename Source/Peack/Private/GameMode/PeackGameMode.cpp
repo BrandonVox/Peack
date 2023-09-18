@@ -7,6 +7,23 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerStart.h"
 
+#include "PlayerState/PeackPlayerState.h"
+
+// Server
+void APeackGameMode::HandleCharacterDead(AController* InstigatorController, AController* VictimController)
+{
+	// InstigatorController
+	// peack player state
+	// add 1 score (instigator)
+	APeackPlayerState* PlayerState_Instigator =
+		InstigatorController->GetPlayerState<APeackPlayerState>();
+
+	if (PlayerState_Instigator)
+	{
+		PlayerState_Instigator->AddOne_Score();
+	}
+}
+
 // Server
 void APeackGameMode::RequestRespawn
 (

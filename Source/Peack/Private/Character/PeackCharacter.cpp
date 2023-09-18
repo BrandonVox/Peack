@@ -109,6 +109,15 @@ void APeackCharacter::HandleTakePointDamage(AActor* DamagedActor, float Damage, 
 	}
 	else
 	{
+		if (APeackGameMode* PeackGameMode = GetAuthPeackGameMode())
+		{
+			PeackGameMode->HandleCharacterDead
+			(
+				InstigatedBy,
+				GetController()
+			);
+		}
+
 		// handle dead
 		HandleDead();
 	}
@@ -241,6 +250,8 @@ void APeackCharacter::Destroyed()
 	Super::Destroyed();
 }
 
+
+
 // Server
 void APeackCharacter::RequestRespawn()
 {
@@ -256,6 +267,16 @@ void APeackCharacter::RequestRespawn()
 			);
 		}
 	}
+}
+
+APeackGameMode* APeackCharacter::GetAuthPeackGameMode() const
+{
+	if (UWorld* World = GetWorld())
+	{
+		return World->GetAuthGameMode<APeackGameMode>();
+	}
+
+	return nullptr;
 }
 
 // Server

@@ -7,6 +7,19 @@
 
 #include "Net/UnrealNetwork.h"
 
+// Server
+void APeackPlayerState::AddOne_Score()
+{
+	SetScore(GetScore() + 1.0f);
+
+	// Server
+	// PC owning this player controller?
+	if (IsLocallyControlled())
+	{
+		UpdateText_Score();
+	}
+}
+
 void APeackPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -30,11 +43,23 @@ void APeackPlayerState::BeginPlay()
 	}
 }
 
+void APeackPlayerState::UpdateText_Score()
+{
+	if (PeackPlayerController == nullptr)
+	{
+		PeackPlayerController = Cast<APeackPlayerController>(GetOwningController());
+	}
+
+	if (PeackPlayerController)
+	{
+		PeackPlayerController->UpdateText_Score(GetScore());
+	}
+}
+
 // Client owning this player state
 void APeackPlayerState::OnRep_Ready()
 {
-	APeackPlayerController* PeackPlayerController
-		= Cast<APeackPlayerController>(GetOwningController());
+	PeackPlayerController = Cast<APeackPlayerController>(GetOwningController());
 	if (PeackPlayerController)
 	{
 		PeackPlayerController->PlayerStateReady(this);

@@ -15,6 +15,13 @@ class PEACK_API APeackGameMode : public AGameMode
 	GENERATED_BODY()
 
 public: // Function
+
+	void HandleCharacterDead
+	(
+		AController* InstigatorController,
+		AController* VictimController
+	);
+
 	void RequestRespawn
 	(
 		ACharacter* GivenCharacter,
