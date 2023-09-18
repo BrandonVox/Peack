@@ -25,6 +25,8 @@ class PEACK_API APeackCharacter : public ACharacter
 	GENERATED_BODY()
 
 public: // Function
+	virtual void Destroyed() override;
+
 	virtual void PossessedBy(AController* NewController) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -103,6 +105,13 @@ private: // Function
 	void FireButtonPressed();
 
 private: // Property
+	/*
+	* Dead
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Dead")
+	float DeadSecond = 2.0f;
+
+
 	UPROPERTY()
 	TObjectPtr<APeackPlayerController> PeackPlayerController;
 

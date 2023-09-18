@@ -121,6 +121,8 @@ void APeackCharacter::HandleDead()
 
 	Multicast_HandleDead();
 	Client_HandleDead();
+
+	SetLifeSpan(DeadSecond);
 }
 
 // Cient, Server
@@ -203,6 +205,16 @@ UAnimMontage* APeackCharacter::GetCorrectHitReactMontage(const FVector& HitDirec
 	}
 
 	return nullptr;
+}
+
+void APeackCharacter::Destroyed()
+{
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->Destroy();
+	}
+
+	Super::Destroyed();
 }
 
 // Server
