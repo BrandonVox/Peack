@@ -13,5 +13,11 @@ UCLASS()
 class PEACK_API APeackGameMode : public AGameMode
 {
 	GENERATED_BODY()
-	
+
+public: // Function
+	void RequestRespawn
+	(
+		ACharacter* GivenCharacter,
+		AController* GivenController
+	);
 };

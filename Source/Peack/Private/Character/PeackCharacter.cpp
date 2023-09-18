@@ -26,6 +26,8 @@
 
 #include "Components/CapsuleComponent.h"
 
+#include "GameMode/PeackGameMode.h"
+
 
 
 
@@ -67,6 +69,9 @@ APeackCharacter::APeackCharacter()
 	// Set Object Type
 	// ECollisionChannel::ECC_GameTraceChannel1 = CustomCharacterMesh
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel1);
+
+	// Spawn Method
+	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 }
 
 // Called when the game starts or when spawned
@@ -108,6 +113,8 @@ void APeackCharacter::HandleTakePointDamage(AActor* DamagedActor, float Damage, 
 		HandleDead();
 	}
 }
+
+
 
 // Server
 void APeackCharacter::HandleDead()
@@ -207,6 +214,7 @@ UAnimMontage* APeackCharacter::GetCorrectHitReactMontage(const FVector& HitDirec
 	return nullptr;
 }
 
+// Client, Server
 void APeackCharacter::Destroyed()
 {
 	if (CurrentWeapon)
@@ -214,7 +222,31 @@ void APeackCharacter::Destroyed()
 		CurrentWeapon->Destroy();
 	}
 
+	// request respawn
+	if (HasAuthority())
+	{
+		RequestRespawn();
+	}
+
+
 	Super::Destroyed();
+}
+
+// Server
+void APeackCharacter::RequestRespawn()
+{
+	if (UWorld* World = GetWorld())
+	{
+		APeackGameMode* PeackGameMode = World->GetAuthGameMode<APeackGameMode>();
+		if (PeackGameMode)
+		{
+			PeackGameMode->RequestRespawn
+			(
+				this,
+				GetController()
+			);
+		}
+	}
 }
 
 // Server
@@ -290,15 +322,6 @@ void APeackCharacter::OnRep_CurrentWeapon()
 	// thi onrep se duoc goi
 	// server tahy doi current weapon
 	// thi server chuyen thong nay xuong cho cac client
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(
-			-1,
-			3.0f,
-			FColor::Purple,
-			TEXT("OnRep_CurrentWeapon()")
-		);
-	}
 
 }
 

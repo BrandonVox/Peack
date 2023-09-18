@@ -40,6 +40,8 @@ protected:
 
 private: // Function
 
+	void RequestRespawn();
+
 	void HandleDead();
 
 	UFUNCTION(NetMulticast, Reliable)
