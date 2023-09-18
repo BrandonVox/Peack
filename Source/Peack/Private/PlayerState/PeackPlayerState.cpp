@@ -25,13 +25,7 @@ void APeackPlayerState::BeginPlay()
 		bReady = true;
 		if (IsLocallyControlled())
 		{
-			APeackPlayerController* PeackPlayerController
-				= Cast<APeackPlayerController>(GetOwningController());
-			if (PeackPlayerController)
-			{
-				PeackPlayerController->PlayerStateReady();
-			}
-
+			OnRep_Ready();
 		}
 	}
 }
@@ -43,7 +37,7 @@ void APeackPlayerState::OnRep_Ready()
 		= Cast<APeackPlayerController>(GetOwningController());
 	if (PeackPlayerController)
 	{
-		PeackPlayerController->PlayerStateReady();
+		PeackPlayerController->PlayerStateReady(this);
 	}
 }
 

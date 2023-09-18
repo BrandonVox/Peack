@@ -6,6 +6,8 @@
 
 #include "Widget/PlayerStateWidget.h"
 
+#include "PlayerState/PeackPlayerState.h"
+
 
 
 
@@ -37,20 +39,22 @@ void APeackPlayerController::CreateWidget_PlayerState()
 	}
 }
 
-void APeackPlayerController::PlayerStateReady()
+void APeackPlayerController::UpdateText_Score(float GivenScore)
 {
-	if (GEngine)
+	if (Widget_PlayerState)
 	{
-		GEngine->AddOnScreenDebugMessage(
-			-1,
-			3.0f,
-			FColor::Purple,
-			TEXT("PlayerStateReady")
-		);
+		Widget_PlayerState->UpdateText_Score(GivenScore);
 	}
+}
 
-	// create player state widget
-	CreateWidget_PlayerState();
+// Local: Owning player state
+void APeackPlayerController::PlayerStateReady(APeackPlayerState* GivenPlayerState)
+{
+	if (GivenPlayerState)
+	{
+		CreateWidget_PlayerState();
+		UpdateText_Score(GivenPlayerState->GetScore());
+	}
 }
 
 // update health bar

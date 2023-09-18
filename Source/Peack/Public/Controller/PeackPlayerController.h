@@ -10,17 +10,22 @@ class UCharacterWidget;
 
 class UPlayerStateWidget;
 
+class APeackPlayerState;
+
 UCLASS()
 class PEACK_API APeackPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
 public: // Function
-	void PlayerStateReady();
+	void PlayerStateReady(APeackPlayerState* GivenPlayerState);
 	void UpdateBar_Health(float Health, float MaxHealth);
 	void CreateWidget_Character();
 
 	void CreateWidget_PlayerState();
+
+private: // Function
+	void UpdateText_Score(float GivenScore);
 
 private: // Property
 	/*
