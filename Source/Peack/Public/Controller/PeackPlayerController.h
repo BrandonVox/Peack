@@ -18,6 +18,9 @@ class PEACK_API APeackPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public: // Function
+
+	virtual void Tick(float DeltaSeconds) override;
+
 	void UpdateText_Score(float GivenScore);
 	void UpdateText_Death(float GivenDeath);
 
@@ -28,8 +31,20 @@ public: // Function
 	void CreateWidget_PlayerState();
 
 private: // Function
+	void UpdateText_Countdown(int TimeLeft);
+
+	double GetWorldTime() const;
 
 private: // Property
+	/*
+	* Countdown
+	*/
+
+	double TotalTime_Match = 20.0;
+
+	int LastCountdown = 0;
+
+
 	/*
 	* Character Widget
 	*/

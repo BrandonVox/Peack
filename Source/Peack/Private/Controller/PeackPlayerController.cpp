@@ -8,8 +8,26 @@
 
 #include "PlayerState/PeackPlayerState.h"
 
+void APeackPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	// total time - world time
+	if (IsLocalController())
+	{
+		double TimeLeft = TotalTime_Match - GetWorldTime();
 
+		int CurrentCountdown = FMath::CeilToInt(TimeLeft);
 
+		if (CurrentCountdown != LastCountdown)
+		{
+			UpdateText_Countdown(CurrentCountdown);
+			LastCountdown = CurrentCountdown;
+		}
+	}
+
+	// Server, 1 2 3
+	// Client: 1
+}
 
 void APeackPlayerController::CreateWidget_Character()
 {
@@ -38,6 +56,39 @@ void APeackPlayerController::CreateWidget_PlayerState()
 		Widget_PlayerState->AddToViewport();
 	}
 }
+
+void APeackPlayerController::UpdateText_Countdown(int TimeLeft)
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			-1,
+			4.0f,
+			FColor::Blue,
+			TEXT("UpdateText_Countdown")
+		);
+	}
+
+
+
+	if (Widget_PlayerState)
+	{
+		Widget_PlayerState->UpdateText_Countdown(TimeLeft);
+	}
+}
+
+double APeackPlayerController::GetWorldTime() const
+{
+	UWorld* World = GetWorld();
+	if (World == nullptr)
+	{
+		return 0.0;
+	}
+	
+	return World->GetTimeSeconds();
+}
+
+
 
 void APeackPlayerController::UpdateText_Score(float GivenScore)
 {
