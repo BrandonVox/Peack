@@ -17,10 +17,15 @@ public:
 	void UpdateText_Score(float GivenScore);
 	void UpdateText_Death(float GivenDeath);
 
+	void UpdateText_Countdown(int TimeLeft);
+
 private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> Text_Score;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> Text_Death;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> Text_Countdown;
 };

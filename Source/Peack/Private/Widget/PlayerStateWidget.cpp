@@ -30,3 +30,16 @@ void UPlayerStateWidget::UpdateText_Death(float GivenDeath)
 		Text_Death->SetText(FText::FromString(NewString));
 	}
 }
+
+void UPlayerStateWidget::UpdateText_Countdown(int TimeLeft)
+{
+	FString NewString = FString::Printf(
+		TEXT("%d"),
+		TimeLeft
+	);
+
+	if (Text_Countdown)
+	{
+		Text_Countdown->SetText(FText::FromString(NewString));
+	}
+}
