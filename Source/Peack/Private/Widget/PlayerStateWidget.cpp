@@ -31,4 +31,21 @@ void UPlayerStateWidget::UpdateText_Death(float GivenDeath)
 	}
 }
 
+void UPlayerStateWidget::ToggleText_MVP(bool bVisible)
+{
+	if (Text_MVP == nullptr)
+	{
+		return;
+	}
+
+	if (bVisible)
+	{
+		Text_MVP->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		Text_MVP->SetVisibility(ESlateVisibility::Hidden);
+	}
+}
+
 

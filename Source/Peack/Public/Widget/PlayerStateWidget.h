@@ -17,6 +17,8 @@ public:
 	void UpdateText_Score(float GivenScore);
 	void UpdateText_Death(float GivenDeath);
 
+	void ToggleText_MVP(bool bVisible);
+
 
 private:
 	UPROPERTY(meta = (BindWidget))
@@ -24,4 +26,7 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> Text_Death;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> Text_MVP;
 };
