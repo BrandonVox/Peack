@@ -9,6 +9,11 @@
 
 #include "PlayerState/PeackPlayerState.h"
 
+APeackGameMode::APeackGameMode()
+{
+	bDelayedStart = true;
+}
+
 // Server
 void APeackGameMode::HandleCharacterDead(AController* InstigatorController, AController* VictimController)
 {

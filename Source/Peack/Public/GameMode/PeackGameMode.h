@@ -16,6 +16,8 @@ class PEACK_API APeackGameMode : public AGameMode
 
 public: // Function
 
+	APeackGameMode();
+
 	void HandleCharacterDead
 	(
 		AController* InstigatorController,
