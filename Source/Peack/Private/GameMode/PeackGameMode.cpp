@@ -17,7 +17,11 @@ void APeackGameMode::PostLogin(APlayerController* NewPlayer)
 
 	if (APeackPlayerController* PPC = Cast<APeackPlayerController>(NewPlayer))
 	{
-		PPC->GameModeSendInformations(GetMatchState());
+		PPC->GameModeSendInformations(
+			GetMatchState(),
+			TotalTime_Warmup,
+			TotalTime_Match
+		);
 	}
 }
 

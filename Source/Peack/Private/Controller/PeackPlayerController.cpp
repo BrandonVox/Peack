@@ -13,15 +13,32 @@
 #include "GameFramework/GameMode.h"
 
 // Server
-void APeackPlayerController::GameModeSendInformations(const FName GivenMatchState)
+void APeackPlayerController::GameModeSendInformations(
+	const FName GivenMatchState,
+	const double TotalWarmupTime,
+	const double TotalMatchTime
+)
 {
 	// Client RPC
-	Client_GameModeSendInformations(GivenMatchState);
+	Client_GameModeSendInformations
+	(
+		GivenMatchState,
+		TotalWarmupTime,
+		TotalMatchTime
+	);
 }
 
 // Owning this player controller (Server, Client)
-void APeackPlayerController::Client_GameModeSendInformations_Implementation(const FName GivenMatchState) // Implementation
+void APeackPlayerController::Client_GameModeSendInformations_Implementation
+(
+	const FName GivenMatchState,
+	const double TotalWarmupTime,
+	const double TotalMatchTime
+) // Implementation
 {
+	TotalTime_Warmup = TotalWarmupTime;
+	TotalTime_Match = TotalMatchTime;
+
 	// Widget....
 	HandleMatchState(GivenMatchState);
 }

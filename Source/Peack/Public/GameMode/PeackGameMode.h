@@ -35,4 +35,11 @@ public: // Function
 protected: // Function
 	virtual void OnMatchStateSet() override;
 
+private: // Property
+
+	UPROPERTY(EditDefaultsOnly, Category = "Countdown")
+	double TotalTime_Warmup = 10.0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Countdown")
+	double TotalTime_Match = 20.0;
 };

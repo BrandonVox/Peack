@@ -21,10 +21,19 @@ class PEACK_API APeackPlayerController : public APlayerController
 
 public: // Function
 
-	void GameModeSendInformations(const FName GivenMatchState);
+	void GameModeSendInformations(
+		const FName GivenMatchState,
+		const double TotalWarmupTime,
+		const double TotalMatchTime
+	);
 
 	UFUNCTION(Client, Reliable)
-	void Client_GameModeSendInformations(const FName GivenMatchState);
+	void Client_GameModeSendInformations
+	(
+		const FName GivenMatchState,
+		const double TotalWarmupTime,
+		const double TotalMatchTime
+	);
 
 	void GameModeChangeMatchState(const FName NewMatchState);
 
@@ -82,11 +91,8 @@ private: // Property
 	/*
 	* Countdown
 	*/
-	UPROPERTY(EditDefaultsOnly, Category = "Countdown")
-	double TotalTime_Warmup = 10.0;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Countdown")
-	double TotalTime_Match = 20.0;
+	double TotalTime_Warmup = 0.0;
+	double TotalTime_Match = 0.0;
 
 	int LastCountdown = 0;
 
