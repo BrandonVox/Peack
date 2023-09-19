@@ -66,7 +66,8 @@ void APeackGameMode::PostLogin(APlayerController* NewPlayer)
 			StartLevelTime,
 			GetMatchState(),
 			TotalTime_Warmup,
-			TotalTime_Match
+			TotalTime_Match,
+			TotalTime_ShowResult
 		);
 	}
 }

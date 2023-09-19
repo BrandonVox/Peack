@@ -20,7 +20,8 @@ void APeackPlayerController::GameModeSendInformations(
 	const double SLT,
 	const FName GivenMatchState,
 	const double TotalWarmupTime,
-	const double TotalMatchTime
+	const double TotalMatchTime,
+	const double TotalShowResultTime
 )
 {
 	// Client RPC
@@ -29,7 +30,8 @@ void APeackPlayerController::GameModeSendInformations(
 		SLT,
 		GivenMatchState,
 		TotalWarmupTime,
-		TotalMatchTime
+		TotalMatchTime,
+		TotalShowResultTime
 	);
 }
 
@@ -39,12 +41,15 @@ void APeackPlayerController::Client_GameModeSendInformations_Implementation
 	const double SLT,
 	const FName GivenMatchState,
 	const double TotalWarmupTime,
-	const double TotalMatchTime
+	const double TotalMatchTime,
+	const double TotalShowResultTime
 ) // Implementation
 {
 	StartLevelTime = SLT;
 	TotalTime_Warmup = TotalWarmupTime;
 	TotalTime_Match = TotalMatchTime;
+	TotalTime_ShowResult = TotalShowResultTime;
+
 
 	// Widget....
 	HandleMatchState(GivenMatchState);
@@ -176,6 +181,10 @@ void APeackPlayerController::UpdateCountdown()
 	{
 		UpdateCountdown_InMatch();
 	}
+	else if (CurrentMatchState == MatchState::ShowResult)
+	{
+		UpdateCountdown_ShowResult();
+	}
 }
 
 void APeackPlayerController::UpdateCountdown_Warmup()
@@ -212,6 +221,26 @@ void APeackPlayerController::UpdateCountdown_InMatch()
 		if (Widget_PlayerState)
 		{
 			Widget_PlayerState->UpdateText_Countdown(CurrentCountdown);
+		}
+
+		LastCountdown = CurrentCountdown;
+	}
+}
+
+void APeackPlayerController::UpdateCountdown_ShowResult()
+{
+	double TimeLeft = TotalTime_ShowResult - GetWorldTime_Server();
+	TimeLeft += StartLevelTime;
+	TimeLeft += TotalTime_Warmup;
+	TimeLeft += TotalTime_Match;
+
+	int CurrentCountdown = FMath::CeilToInt(TimeLeft);
+
+	if (CurrentCountdown != LastCountdown)
+	{
+		if (Widget_ShowResult)
+		{
+			Widget_ShowResult->UpdateText_Countdown(CurrentCountdown);
 		}
 
 		LastCountdown = CurrentCountdown;

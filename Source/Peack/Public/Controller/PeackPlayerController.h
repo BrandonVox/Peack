@@ -27,7 +27,8 @@ public: // Function
 		const double SLT,
 		const FName GivenMatchState,
 		const double TotalWarmupTime,
-		const double TotalMatchTime
+		const double TotalMatchTime,
+		const double TotalShowResultTime
 	);
 
 	UFUNCTION(Client, Reliable)
@@ -36,7 +37,8 @@ public: // Function
 		const double SLT,
 		const FName GivenMatchState,
 		const double TotalWarmupTime,
-		const double TotalMatchTime
+		const double TotalMatchTime,
+		const double TotalShowResultTime
 	);
 
 	void GameModeChangeMatchState(const FName NewMatchState);
@@ -69,6 +71,7 @@ private: // Function
 
 	void UpdateCountdown_Warmup();
 	void UpdateCountdown_InMatch();
+	void UpdateCountdown_ShowResult();
 
 
 	void HandleMatchState(const FName GivenMatchState);
@@ -100,6 +103,7 @@ private: // Property
 	double StartLevelTime = 0.0;
 	double TotalTime_Warmup = 0.0;
 	double TotalTime_Match = 0.0;
+	double TotalTime_ShowResult = 0.0;
 
 	int LastCountdown = 0;
 
