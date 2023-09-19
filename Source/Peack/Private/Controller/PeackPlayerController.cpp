@@ -6,7 +6,37 @@
 
 #include "Widget/PlayerStateWidget.h"
 
+#include "Widget/WarmupWidget.h"
+
 #include "PlayerState/PeackPlayerState.h"
+
+#include "GameFramework/GameMode.h"
+
+// Server
+void APeackPlayerController::MatchStateGameModeChanged(const FName NewMatchState)
+{
+	// widget
+	// code run on pc owning this player controller
+	// client rpc
+	Client_MatchStateGameModeChanged(NewMatchState);
+}
+
+// Local: Pc Owning this player controller
+void APeackPlayerController::Client_MatchStateGameModeChanged_Implementation(const FName NewMatchState) // Implementation
+{
+	if (NewMatchState == MatchState::WaitingToStart)
+	{
+		CreateWidget_Warmup();
+	}
+	else if (NewMatchState == MatchState::InProgress)
+	{
+		if (Widget_Warmup)
+		{
+			Widget_Warmup->RemoveFromParent();
+		}
+		CreateWidget_PlayerState();
+	}
+}
 
 // Client, Server
 // Server: 3
@@ -93,6 +123,20 @@ void APeackPlayerController::CreateWidget_PlayerState()
 	}
 }
 
+void APeackPlayerController::CreateWidget_Warmup()
+{
+	if (Widget_Warmup)
+	{
+		return;
+	}
+
+	Widget_Warmup = CreateWidget<UWarmupWidget>(this, WidgetClass_Warmup);
+	if (Widget_Warmup)
+	{
+		Widget_Warmup->AddToViewport();
+	}
+}
+
 
 
 void APeackPlayerController::UpdateText_Countdown(int TimeLeft)
@@ -141,13 +185,13 @@ void APeackPlayerController::UpdateText_Death(float GivenDeath)
 // Local: Owning player state
 void APeackPlayerController::PlayerStateReady(APeackPlayerState* GivenPlayerState)
 {
-	if (GivenPlayerState)
-	{
-		CreateWidget_PlayerState();
-		UpdateText_Score(GivenPlayerState->GetScore());
+	//if (GivenPlayerState)
+	//{
+	//	CreateWidget_PlayerState();
+	//	UpdateText_Score(GivenPlayerState->GetScore());
 
-		UpdateText_Death(GivenPlayerState->GetDeath());
-	}
+	//	UpdateText_Death(GivenPlayerState->GetDeath());
+	//}
 }
 
 // update health bar

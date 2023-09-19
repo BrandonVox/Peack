@@ -12,12 +12,20 @@ class UPlayerStateWidget;
 
 class APeackPlayerState;
 
+class UWarmupWidget;
+
 UCLASS()
 class PEACK_API APeackPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
 public: // Function
+
+	void MatchStateGameModeChanged(const FName NewMatchState);
+
+	UFUNCTION(Client, Reliable)
+	void Client_MatchStateGameModeChanged(const FName NewMatchState);
+
 
 	virtual void ReceivedPlayer() override;
 
@@ -32,6 +40,8 @@ public: // Function
 	void CreateWidget_Character();
 
 	void CreateWidget_PlayerState();
+
+	void CreateWidget_Warmup();
 
 private: // Function
 
@@ -79,4 +89,13 @@ private: // Property
 
 	UPROPERTY()
 	TObjectPtr<UPlayerStateWidget> Widget_PlayerState;
+
+	/*
+	* Warmup Widget
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	TSubclassOf<UWarmupWidget> WidgetClass_Warmup;
+
+	UPROPERTY()
+	TObjectPtr<UWarmupWidget> Widget_Warmup;
 };

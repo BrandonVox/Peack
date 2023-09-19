@@ -29,4 +29,8 @@ public: // Function
 		ACharacter* GivenCharacter,
 		AController* GivenController
 	);
+
+protected: // Function
+	virtual void OnMatchStateSet() override;
+
 };

@@ -9,6 +9,8 @@
 
 #include "PlayerState/PeackPlayerState.h"
 
+#include "Controller/PeackPlayerController.h"
+
 APeackGameMode::APeackGameMode()
 {
 	bDelayedStart = true;
@@ -59,5 +61,22 @@ void APeackGameMode::RequestRespawn
 	if (PlayerStartActors.IsValidIndex(0))
 	{
 		RestartPlayerAtPlayerStart(GivenController, PlayerStartActors[0]);
+	}
+}
+
+// Server
+void APeackGameMode::OnMatchStateSet()
+{
+	Super::OnMatchStateSet();
+
+	// thong bao cho tat ca player controller
+	// match state changed
+
+	for (FConstPlayerControllerIterator PCI = GetWorld()->GetPlayerControllerIterator(); PCI; ++PCI)
+	{
+		if (APeackPlayerController* PPC = Cast<APeackPlayerController>(*PCI))
+		{
+			PPC->MatchStateGameModeChanged(GetMatchState());
+		}
 	}
 }
