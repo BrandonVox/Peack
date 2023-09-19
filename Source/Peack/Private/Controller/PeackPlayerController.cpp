@@ -13,22 +13,41 @@
 #include "GameFramework/GameMode.h"
 
 // Server
-void APeackPlayerController::MatchStateGameModeChanged(const FName NewMatchState)
+void APeackPlayerController::GameModeSendInformations(const FName GivenMatchState)
+{
+	// Client RPC
+	Client_GameModeSendInformations(GivenMatchState);
+}
+
+// Owning this player controller (Server, Client)
+void APeackPlayerController::Client_GameModeSendInformations_Implementation(const FName GivenMatchState) // Implementation
+{
+	// Widget....
+	HandleMatchState(GivenMatchState);
+}
+
+// Server
+void APeackPlayerController::GameModeChangeMatchState(const FName NewMatchState)
 {
 	// widget
 	// code run on pc owning this player controller
 	// client rpc
-	Client_MatchStateGameModeChanged(NewMatchState);
+	Client_GameModeChangeMatchState(NewMatchState);
 }
 
 // Local: Pc Owning this player controller
-void APeackPlayerController::Client_MatchStateGameModeChanged_Implementation(const FName NewMatchState) // Implementation
+void APeackPlayerController::Client_GameModeChangeMatchState_Implementation(const FName NewMatchState) // Implementation
 {
-	if (NewMatchState == MatchState::WaitingToStart)
+	HandleMatchState(NewMatchState);
+}
+
+void APeackPlayerController::HandleMatchState(const FName GivenMatchState)
+{
+	if (GivenMatchState == MatchState::WaitingToStart)
 	{
 		CreateWidget_Warmup();
 	}
-	else if (NewMatchState == MatchState::InProgress)
+	else if (GivenMatchState == MatchState::InProgress)
 	{
 		if (Widget_Warmup)
 		{
@@ -37,6 +56,7 @@ void APeackPlayerController::Client_MatchStateGameModeChanged_Implementation(con
 		CreateWidget_PlayerState();
 	}
 }
+
 
 // Client, Server
 // Server: 3
@@ -136,6 +156,7 @@ void APeackPlayerController::CreateWidget_Warmup()
 		Widget_Warmup->AddToViewport();
 	}
 }
+
 
 
 

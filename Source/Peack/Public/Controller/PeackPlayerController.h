@@ -21,10 +21,15 @@ class PEACK_API APeackPlayerController : public APlayerController
 
 public: // Function
 
-	void MatchStateGameModeChanged(const FName NewMatchState);
+	void GameModeSendInformations(const FName GivenMatchState);
 
 	UFUNCTION(Client, Reliable)
-	void Client_MatchStateGameModeChanged(const FName NewMatchState);
+	void Client_GameModeSendInformations(const FName GivenMatchState);
+
+	void GameModeChangeMatchState(const FName NewMatchState);
+
+	UFUNCTION(Client, Reliable)
+	void Client_GameModeChangeMatchState(const FName NewMatchState);
 
 
 	virtual void ReceivedPlayer() override;
@@ -44,6 +49,9 @@ public: // Function
 	void CreateWidget_Warmup();
 
 private: // Function
+
+	void HandleMatchState(const FName GivenMatchState);
+
 
 	UFUNCTION(Server, Reliable)
 	void Server_RequestServerTime(double RequestTimeFromClient);

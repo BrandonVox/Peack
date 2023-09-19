@@ -16,6 +16,8 @@ class PEACK_API APeackGameMode : public AGameMode
 
 public: // Function
 
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+
 	APeackGameMode();
 
 	void HandleCharacterDead

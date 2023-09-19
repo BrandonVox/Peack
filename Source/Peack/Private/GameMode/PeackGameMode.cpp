@@ -11,6 +11,16 @@
 
 #include "Controller/PeackPlayerController.h"
 
+void APeackGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	if (APeackPlayerController* PPC = Cast<APeackPlayerController>(NewPlayer))
+	{
+		PPC->GameModeSendInformations(GetMatchState());
+	}
+}
+
 APeackGameMode::APeackGameMode()
 {
 	bDelayedStart = true;
@@ -76,7 +86,9 @@ void APeackGameMode::OnMatchStateSet()
 	{
 		if (APeackPlayerController* PPC = Cast<APeackPlayerController>(*PCI))
 		{
-			PPC->MatchStateGameModeChanged(GetMatchState());
+			PPC->GameModeChangeMatchState(GetMatchState());
 		}
 	}
+
+	// event game mode reveice player controller (client)
 }
