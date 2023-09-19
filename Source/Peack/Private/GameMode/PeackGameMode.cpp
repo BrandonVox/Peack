@@ -12,15 +12,20 @@
 // Server
 void APeackGameMode::HandleCharacterDead(AController* InstigatorController, AController* VictimController)
 {
-	// InstigatorController
-	// peack player state
-	// add 1 score (instigator)
-	APeackPlayerState* PlayerState_Instigator =
-		InstigatorController->GetPlayerState<APeackPlayerState>();
-
-	if (PlayerState_Instigator)
+	/*
+	* Add 1 Score
+	*/
+	if (APeackPlayerState* PlayerState_Instigator = InstigatorController->GetPlayerState<APeackPlayerState>())
 	{
 		PlayerState_Instigator->AddOne_Score();
+	}
+
+	/*
+	* Add 1 Death
+	*/
+	if (APeackPlayerState* PlayerState_Victim = VictimController->GetPlayerState<APeackPlayerState>())
+	{
+		PlayerState_Victim->AddOne_Death();
 	}
 }
 

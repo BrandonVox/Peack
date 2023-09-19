@@ -62,6 +62,8 @@ void APeackPlayerController::PlayerStateReady(APeackPlayerState* GivenPlayerStat
 	{
 		CreateWidget_PlayerState();
 		UpdateText_Score(GivenPlayerState->GetScore());
+
+		UpdateText_Death(GivenPlayerState->GetDeath());
 	}
 }
 

@@ -14,11 +14,22 @@ class PEACK_API APeackPlayerState : public APlayerState
 	GENERATED_BODY()
 
 public: // Function
+	void SetDeath(const float NewDeath);
+
+	float GetDeath() const
+	{
+		return Death;
+	}
+
+
+
+
 	APeackPlayerState();
 
 	virtual void OnRep_Score() override;
 
 	void AddOne_Score();
+	void AddOne_Death();
 
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 

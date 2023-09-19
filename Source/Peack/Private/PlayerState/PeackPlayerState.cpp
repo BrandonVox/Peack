@@ -8,6 +8,11 @@
 #include "Net/UnrealNetwork.h"
 
 
+void APeackPlayerState::SetDeath(const float NewDeath)
+{
+	Death = NewDeath;
+}
+
 APeackPlayerState::APeackPlayerState()
 {
 	NetUpdateFrequency = 5.0f;
@@ -18,14 +23,20 @@ APeackPlayerState::APeackPlayerState()
 void APeackPlayerState::AddOne_Score()
 {
 	SetScore(GetScore() + 1.0f);
-	// Server (Score) -> Client
-	// OnRep Override
 
-	// Server
-	// PC owning this player controller?
 	if (IsLocallyControlled())
 	{
 		UpdateText_Score();
+	}
+}
+
+void APeackPlayerState::AddOne_Death()
+{
+	SetDeath(GetDeath() + 1.0f);
+
+	if (IsLocallyControlled())
+	{
+		UpdateText_Death();
 	}
 }
 
