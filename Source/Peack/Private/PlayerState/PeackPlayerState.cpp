@@ -42,13 +42,21 @@ void APeackPlayerState::OnRep_Score()
 	}
 }
 
+// Client: owning this player state
+void APeackPlayerState::OnRep_Death()
+{
+	if (IsLocallyControlled())
+	{
+		UpdateText_Death();
+	}
+}
+
 void APeackPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME_CONDITION(APeackPlayerState, bReady, COND_OwnerOnly);
 
-	// Server -> Client
-	// Client owning this player state
+	DOREPLIFETIME_CONDITION(APeackPlayerState, bReady, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(APeackPlayerState, Death, COND_OwnerOnly);
 }
 
 void APeackPlayerState::BeginPlay()
@@ -65,6 +73,8 @@ void APeackPlayerState::BeginPlay()
 	}
 }
 
+
+
 void APeackPlayerState::UpdateText_Score()
 {
 	if (PeackPlayerController == nullptr)
@@ -75,6 +85,19 @@ void APeackPlayerState::UpdateText_Score()
 	if (PeackPlayerController)
 	{
 		PeackPlayerController->UpdateText_Score(GetScore());
+	}
+}
+
+void APeackPlayerState::UpdateText_Death()
+{
+	if (PeackPlayerController == nullptr)
+	{
+		PeackPlayerController = Cast<APeackPlayerController>(GetOwningController());
+	}
+
+	if (PeackPlayerController)
+	{
+		PeackPlayerController->UpdateText_Death(Death);
 	}
 }
 

@@ -19,6 +19,7 @@ class PEACK_API APeackPlayerController : public APlayerController
 
 public: // Function
 	void UpdateText_Score(float GivenScore);
+	void UpdateText_Death(float GivenDeath);
 
 	void PlayerStateReady(APeackPlayerState* GivenPlayerState);
 	void UpdateBar_Health(float Health, float MaxHealth);

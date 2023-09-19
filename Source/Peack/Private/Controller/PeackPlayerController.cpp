@@ -47,6 +47,14 @@ void APeackPlayerController::UpdateText_Score(float GivenScore)
 	}
 }
 
+void APeackPlayerController::UpdateText_Death(float GivenDeath)
+{
+	if (Widget_PlayerState)
+	{
+		Widget_PlayerState->UpdateText_Death(GivenDeath);
+	}
+}
+
 // Local: Owning player state
 void APeackPlayerController::PlayerStateReady(APeackPlayerState* GivenPlayerState)
 {

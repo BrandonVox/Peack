@@ -27,7 +27,12 @@ protected:
 
 private: // Function
 
+	UFUNCTION()
+	void OnRep_Death();
+
 	void UpdateText_Score();
+	void UpdateText_Death();
+
 
 	UFUNCTION()
 	void OnRep_Ready();
@@ -35,6 +40,10 @@ private: // Function
 	bool IsLocallyControlled() const;
 
 private: // Property
+
+	UPROPERTY(ReplicatedUsing = OnRep_Death)
+	float Death = 0.0f;
+
 	UPROPERTY()
 	TObjectPtr<APeackPlayerController> PeackPlayerController;
 
