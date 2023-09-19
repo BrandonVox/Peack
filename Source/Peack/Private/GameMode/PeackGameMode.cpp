@@ -11,6 +11,8 @@
 
 #include "Controller/PeackPlayerController.h"
 
+#include "GameState/PeackGameState.h"
+
 
 namespace MatchState
 {
@@ -86,6 +88,11 @@ void APeackGameMode::HandleCharacterDead(AController* InstigatorController, ACon
 	if (APeackPlayerState* PlayerState_Instigator = InstigatorController->GetPlayerState<APeackPlayerState>())
 	{
 		PlayerState_Instigator->AddOne_Score();
+
+		if (APeackGameState* PeackGameState = GetGameState<APeackGameState>())
+		{
+			PeackGameState->UpdateMVP(PlayerState_Instigator);
+		}
 	}
 
 	/*

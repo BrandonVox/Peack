@@ -6,9 +6,8 @@
 #include "GameFramework/GameState.h"
 #include "PeackGameState.generated.h"
 
-/**
- * 
- */
+class APeackPlayerState;
+
 UCLASS()
 class PEACK_API APeackGameState : public AGameState
 {
@@ -16,5 +15,10 @@ class PEACK_API APeackGameState : public AGameState
 
 public: // Function
 	APeackGameState();
-	
+
+	void UpdateMVP(APeackPlayerState* InstigatorPlayerState);
+
+public: // Property
+	UPROPERTY()
+	TObjectPtr<APeackPlayerState> CurrentMVP;
 };
