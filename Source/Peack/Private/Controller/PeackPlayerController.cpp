@@ -182,7 +182,11 @@ void APeackPlayerController::UpdateCountdown_Warmup()
 
 void APeackPlayerController::UpdateCountdown_InMatch()
 {
+	// 15s
+	// 5s
+	// 10s
 	double TimeLeft = TotalTime_Match - GetWorldTime_Server();
+	TimeLeft += TotalTime_Warmup;
 
 	int CurrentCountdown = FMath::CeilToInt(TimeLeft);
 

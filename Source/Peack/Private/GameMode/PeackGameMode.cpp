@@ -11,6 +11,22 @@
 
 #include "Controller/PeackPlayerController.h"
 
+// Server
+void APeackGameMode::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (GetMatchState() == MatchState::WaitingToStart)
+	{
+		double TimeLeft = TotalTime_Warmup - GetWorldTime();
+
+		if (TimeLeft <= 0.0)
+		{
+			StartMatch();
+		}
+	}
+}
+
 void APeackGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
@@ -95,4 +111,15 @@ void APeackGameMode::OnMatchStateSet()
 	}
 
 	// event game mode reveice player controller (client)
+}
+
+double APeackGameMode::GetWorldTime() const
+{
+	UWorld* World = GetWorld();
+	if (World == nullptr)
+	{
+		return 0.0;
+	}
+
+	return World->GetTimeSeconds();
 }

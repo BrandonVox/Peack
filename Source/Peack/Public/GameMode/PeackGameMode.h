@@ -16,6 +16,8 @@ class PEACK_API APeackGameMode : public AGameMode
 
 public: // Function
 
+	virtual void Tick(float DeltaSeconds) override;
+
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
 	APeackGameMode();
@@ -34,6 +36,9 @@ public: // Function
 
 protected: // Function
 	virtual void OnMatchStateSet() override;
+
+private: // Function
+	double GetWorldTime() const;
 
 private: // Property
 
