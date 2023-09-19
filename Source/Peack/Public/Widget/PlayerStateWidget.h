@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "Widget/CountdownWidget.h"
 #include "PlayerStateWidget.generated.h"
 
 class UTextBlock;
 
 UCLASS()
-class PEACK_API UPlayerStateWidget : public UUserWidget
+class PEACK_API UPlayerStateWidget : public UCountdownWidget
 {
 	GENERATED_BODY()
 
@@ -17,7 +17,6 @@ public:
 	void UpdateText_Score(float GivenScore);
 	void UpdateText_Death(float GivenDeath);
 
-	void UpdateText_Countdown(int TimeLeft);
 
 private:
 	UPROPERTY(meta = (BindWidget))
@@ -25,7 +24,4 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> Text_Death;
-
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UTextBlock> Text_Countdown;
 };
