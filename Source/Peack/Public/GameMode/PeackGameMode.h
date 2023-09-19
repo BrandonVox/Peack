@@ -35,12 +35,16 @@ public: // Function
 	);
 
 protected: // Function
+	virtual void BeginPlay() override;
+
 	virtual void OnMatchStateSet() override;
 
 private: // Function
 	double GetWorldTime() const;
 
 private: // Property
+
+	double StartLevelTime = 0.0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Countdown")
 	double TotalTime_Warmup = 10.0;

@@ -11,14 +11,26 @@
 
 #include "Controller/PeackPlayerController.h"
 
+void APeackGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	StartLevelTime = GetWorldTime();
+}
+
 // Server
 void APeackGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	// Lobby Map: 50s
+	// First Map (Peack Game Mode)
+	// Begin Play (Game Mode)
+
 	if (GetMatchState() == MatchState::WaitingToStart)
 	{
+		//                     10                50   = -40
 		double TimeLeft = TotalTime_Warmup - GetWorldTime();
+		TimeLeft += StartLevelTime;
 
 		if (TimeLeft <= 0.0)
 		{
@@ -34,6 +46,7 @@ void APeackGameMode::PostLogin(APlayerController* NewPlayer)
 	if (APeackPlayerController* PPC = Cast<APeackPlayerController>(NewPlayer))
 	{
 		PPC->GameModeSendInformations(
+			StartLevelTime,
 			GetMatchState(),
 			TotalTime_Warmup,
 			TotalTime_Match
@@ -93,6 +106,8 @@ void APeackGameMode::RequestRespawn
 		RestartPlayerAtPlayerStart(GivenController, PlayerStartActors[0]);
 	}
 }
+
+
 
 // Server
 void APeackGameMode::OnMatchStateSet()

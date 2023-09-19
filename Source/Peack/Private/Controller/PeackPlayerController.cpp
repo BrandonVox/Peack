@@ -14,6 +14,7 @@
 
 // Server
 void APeackPlayerController::GameModeSendInformations(
+	const double SLT,
 	const FName GivenMatchState,
 	const double TotalWarmupTime,
 	const double TotalMatchTime
@@ -22,6 +23,7 @@ void APeackPlayerController::GameModeSendInformations(
 	// Client RPC
 	Client_GameModeSendInformations
 	(
+		SLT,
 		GivenMatchState,
 		TotalWarmupTime,
 		TotalMatchTime
@@ -31,11 +33,13 @@ void APeackPlayerController::GameModeSendInformations(
 // Owning this player controller (Server, Client)
 void APeackPlayerController::Client_GameModeSendInformations_Implementation
 (
+	const double SLT,
 	const FName GivenMatchState,
 	const double TotalWarmupTime,
 	const double TotalMatchTime
 ) // Implementation
 {
+	StartLevelTime = SLT;
 	TotalTime_Warmup = TotalWarmupTime;
 	TotalTime_Match = TotalMatchTime;
 
@@ -166,6 +170,7 @@ void APeackPlayerController::UpdateCountdown()
 void APeackPlayerController::UpdateCountdown_Warmup()
 {
 	double TimeLeft = TotalTime_Warmup - GetWorldTime_Server();
+	TimeLeft += StartLevelTime;
 
 	int CurrentCountdown = FMath::CeilToInt(TimeLeft);
 
@@ -186,6 +191,7 @@ void APeackPlayerController::UpdateCountdown_InMatch()
 	// 5s
 	// 10s
 	double TimeLeft = TotalTime_Match - GetWorldTime_Server();
+	TimeLeft += StartLevelTime;
 	TimeLeft += TotalTime_Warmup;
 
 	int CurrentCountdown = FMath::CeilToInt(TimeLeft);

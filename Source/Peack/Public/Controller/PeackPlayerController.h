@@ -22,6 +22,7 @@ class PEACK_API APeackPlayerController : public APlayerController
 public: // Function
 
 	void GameModeSendInformations(
+		const double SLT,
 		const FName GivenMatchState,
 		const double TotalWarmupTime,
 		const double TotalMatchTime
@@ -30,6 +31,7 @@ public: // Function
 	UFUNCTION(Client, Reliable)
 	void Client_GameModeSendInformations
 	(
+		const double SLT,
 		const FName GivenMatchState,
 		const double TotalWarmupTime,
 		const double TotalMatchTime
@@ -91,6 +93,7 @@ private: // Property
 	/*
 	* Countdown
 	*/
+	double StartLevelTime = 0.0;
 	double TotalTime_Warmup = 0.0;
 	double TotalTime_Match = 0.0;
 
