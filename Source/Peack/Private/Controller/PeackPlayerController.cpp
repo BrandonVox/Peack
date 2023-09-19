@@ -8,9 +8,12 @@
 
 #include "Widget/WarmupWidget.h"
 
+#include "Widget/ShowResultWidget.h"
+
+
 #include "PlayerState/PeackPlayerState.h"
 
-#include "GameFramework/GameMode.h"
+#include "GameMode/PeackGameMode.h"
 
 // Server
 void APeackPlayerController::GameModeSendInformations(
@@ -89,6 +92,14 @@ void APeackPlayerController::HandleMatchState(const FName GivenMatchState)
 			UpdateText_Score(PeackPlayerState->GetScore());
 			UpdateText_Death(PeackPlayerState->GetDeath());
 		}
+	}
+	else if (GivenMatchState == MatchState::ShowResult)
+	{
+		if (Widget_PlayerState)
+		{
+			Widget_PlayerState->RemoveFromParent();
+		}
+		CreateWidget_ShowResult();
 	}
 }
 
@@ -246,6 +257,20 @@ void APeackPlayerController::CreateWidget_Warmup()
 	if (Widget_Warmup)
 	{
 		Widget_Warmup->AddToViewport();
+	}
+}
+
+void APeackPlayerController::CreateWidget_ShowResult()
+{
+	if (Widget_ShowResult)
+	{
+		return;
+	}
+
+	Widget_ShowResult = CreateWidget<UShowResultWidget>(this, WidgetClass_ShowResult);
+	if (Widget_ShowResult)
+	{
+		Widget_ShowResult->AddToViewport();
 	}
 }
 

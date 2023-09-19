@@ -14,6 +14,8 @@ class APeackPlayerState;
 
 class UWarmupWidget;
 
+class UShowResultWidget;
+
 UCLASS()
 class PEACK_API APeackPlayerController : public APlayerController
 {
@@ -58,6 +60,8 @@ public: // Function
 	void CreateWidget_PlayerState();
 
 	void CreateWidget_Warmup();
+
+	void CreateWidget_ShowResult();
 
 private: // Function
 
@@ -128,4 +132,13 @@ private: // Property
 
 	UPROPERTY()
 	TObjectPtr<UWarmupWidget> Widget_Warmup;
+
+	/*
+	* ShowResult Widget
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	TSubclassOf<UShowResultWidget> WidgetClass_ShowResult;
+
+	UPROPERTY()
+	TObjectPtr<UShowResultWidget> Widget_ShowResult;
 };

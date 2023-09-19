@@ -53,4 +53,7 @@ private: // Property
 
 	UPROPERTY(EditDefaultsOnly, Category = "Countdown")
 	double TotalTime_Match = 20.0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Countdown")
+	double TotalTime_ShowResult = 10.0;
 };

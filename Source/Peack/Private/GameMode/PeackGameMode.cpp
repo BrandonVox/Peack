@@ -43,6 +43,17 @@ void APeackGameMode::Tick(float DeltaSeconds)
 			StartMatch();
 		}
 	}
+	else if (GetMatchState() == MatchState::InProgress)
+	{
+		double TimeLeft = TotalTime_Match - GetWorldTime();
+		TimeLeft += StartLevelTime;
+		TimeLeft += TotalTime_Warmup;
+
+		if (TimeLeft <= 0.0)
+		{
+			SetMatchState(MatchState::ShowResult);
+		}
+	}
 }
 
 void APeackGameMode::PostLogin(APlayerController* NewPlayer)
