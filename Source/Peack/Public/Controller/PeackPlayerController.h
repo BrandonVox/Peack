@@ -50,6 +50,12 @@ public: // Function
 
 private: // Function
 
+	void UpdateCountdown();
+
+	void UpdateCountdown_Warmup();
+	void UpdateCountdown_InMatch();
+
+
 	void HandleMatchState(const FName GivenMatchState);
 
 
@@ -62,8 +68,6 @@ private: // Function
 		double RequestTimeFromClient,
 		double ReceiveTimeFromServer
 	);
-
-	void UpdateText_Countdown(int TimeLeft);
 
 	double GetWorldTime() const;
 	double GetWorldTime_Server() const;
@@ -78,7 +82,10 @@ private: // Property
 	/*
 	* Countdown
 	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Countdown")
+	double TotalTime_Warmup = 10.0;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Countdown")
 	double TotalTime_Match = 20.0;
 
 	int LastCountdown = 0;

@@ -41,6 +41,8 @@ void APeackPlayerController::Client_GameModeChangeMatchState_Implementation(cons
 	HandleMatchState(NewMatchState);
 }
 
+
+
 void APeackPlayerController::HandleMatchState(const FName GivenMatchState)
 {
 	if (CurrentMatchState == GivenMatchState)
@@ -125,22 +127,57 @@ void APeackPlayerController::Client_ReportServerTimeToClient_Implementation(doub
 void APeackPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	// total time - world time
+
 	if (IsLocalController())
 	{
-		double TimeLeft = TotalTime_Match - GetWorldTime_Server();
-
-		int CurrentCountdown = FMath::CeilToInt(TimeLeft);
-
-		if (CurrentCountdown != LastCountdown)
-		{
-			UpdateText_Countdown(CurrentCountdown);
-			LastCountdown = CurrentCountdown;
-		}
+		UpdateCountdown();
 	}
+}
 
-	// Server, 1 2 3
-	// Client: 1
+void APeackPlayerController::UpdateCountdown()
+{
+	if (CurrentMatchState == MatchState::WaitingToStart)
+	{
+		UpdateCountdown_Warmup();
+	}
+	else if (CurrentMatchState == MatchState::InProgress)
+	{
+		UpdateCountdown_InMatch();
+	}
+}
+
+void APeackPlayerController::UpdateCountdown_Warmup()
+{
+	double TimeLeft = TotalTime_Warmup - GetWorldTime_Server();
+
+	int CurrentCountdown = FMath::CeilToInt(TimeLeft);
+
+	if (CurrentCountdown != LastCountdown)
+	{
+		if (Widget_Warmup)
+		{
+			Widget_Warmup->UpdateText_Countdown(CurrentCountdown);
+		}
+
+		LastCountdown = CurrentCountdown;
+	}
+}
+
+void APeackPlayerController::UpdateCountdown_InMatch()
+{
+	double TimeLeft = TotalTime_Match - GetWorldTime_Server();
+
+	int CurrentCountdown = FMath::CeilToInt(TimeLeft);
+
+	if (CurrentCountdown != LastCountdown)
+	{
+		if (Widget_PlayerState)
+		{
+			Widget_PlayerState->UpdateText_Countdown(CurrentCountdown);
+		}
+
+		LastCountdown = CurrentCountdown;
+	}
 }
 
 void APeackPlayerController::CreateWidget_Character()
@@ -182,17 +219,6 @@ void APeackPlayerController::CreateWidget_Warmup()
 	if (Widget_Warmup)
 	{
 		Widget_Warmup->AddToViewport();
-	}
-}
-
-
-
-
-void APeackPlayerController::UpdateText_Countdown(int TimeLeft)
-{
-	if (Widget_PlayerState)
-	{
-		Widget_PlayerState->UpdateText_Countdown(TimeLeft);
 	}
 }
 
