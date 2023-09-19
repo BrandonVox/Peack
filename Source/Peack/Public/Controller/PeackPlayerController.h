@@ -69,6 +69,12 @@ private: // Function
 	double GetWorldTime_Server() const;
 
 private: // Property
+
+	FName CurrentMatchState;
+
+	UPROPERTY()
+	TObjectPtr<APeackPlayerState> PeackPlayerState;
+
 	/*
 	* Countdown
 	*/

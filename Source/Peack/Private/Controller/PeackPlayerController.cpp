@@ -43,6 +43,13 @@ void APeackPlayerController::Client_GameModeChangeMatchState_Implementation(cons
 
 void APeackPlayerController::HandleMatchState(const FName GivenMatchState)
 {
+	if (CurrentMatchState == GivenMatchState)
+	{
+		return;
+	}
+
+	CurrentMatchState = GivenMatchState;
+
 	if (GivenMatchState == MatchState::WaitingToStart)
 	{
 		CreateWidget_Warmup();
@@ -53,7 +60,28 @@ void APeackPlayerController::HandleMatchState(const FName GivenMatchState)
 		{
 			Widget_Warmup->RemoveFromParent();
 		}
-		CreateWidget_PlayerState();
+		if (PeackPlayerState)
+		{
+			CreateWidget_PlayerState();
+			UpdateText_Score(PeackPlayerState->GetScore());
+			UpdateText_Death(PeackPlayerState->GetDeath());
+		}
+	}
+}
+
+// Local: Owning player state
+void APeackPlayerController::PlayerStateReady(APeackPlayerState* GivenPlayerState)
+{
+	PeackPlayerState = GivenPlayerState;
+
+	if (CurrentMatchState == MatchState::InProgress)
+	{
+		if (PeackPlayerState)
+		{
+			CreateWidget_PlayerState();
+			UpdateText_Score(PeackPlayerState->GetScore());
+			UpdateText_Death(PeackPlayerState->GetDeath());
+		}
 	}
 }
 
@@ -203,17 +231,7 @@ void APeackPlayerController::UpdateText_Death(float GivenDeath)
 	}
 }
 
-// Local: Owning player state
-void APeackPlayerController::PlayerStateReady(APeackPlayerState* GivenPlayerState)
-{
-	//if (GivenPlayerState)
-	//{
-	//	CreateWidget_PlayerState();
-	//	UpdateText_Score(GivenPlayerState->GetScore());
 
-	//	UpdateText_Death(GivenPlayerState->GetDeath());
-	//}
-}
 
 // update health bar
 void APeackPlayerController::UpdateBar_Health(float Health, float MaxHealth)
