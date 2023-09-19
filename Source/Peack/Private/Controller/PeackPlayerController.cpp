@@ -8,13 +8,49 @@
 
 #include "PlayerState/PeackPlayerState.h"
 
+// Client, Server
+// Server: 3
+// Client: 1
+// Client: 1
+void APeackPlayerController::ReceivedPlayer()
+{
+	Super::ReceivedPlayer();
+
+	if (!HasAuthority() && IsLocalController())
+	{
+		Server_RequestServerTime(GetWorldTime());
+	}
+}
+
+// Server
+void APeackPlayerController::Server_RequestServerTime_Implementation(double RequestTimeFromClient) // Implementation
+{
+	// Server -> Client
+	// Receive Time
+	// Client RPC
+	Client_ReportServerTimeToClient(
+		RequestTimeFromClient,
+		GetWorldTime()
+	);
+}
+
+// Client
+void APeackPlayerController::Client_ReportServerTimeToClient_Implementation(double RequestTimeFromClient, double ReceiveTimeFromServer) // Implementation
+{
+	double RoundTripTime = GetWorldTime() - RequestTimeFromClient;
+
+	double CurrentServerTime = ReceiveTimeFromServer + (0.5 * RoundTripTime);
+
+	Delta_Client_Server = CurrentServerTime - GetWorldTime();
+}
+
 void APeackPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	// total time - world time
 	if (IsLocalController())
 	{
-		double TimeLeft = TotalTime_Match - GetWorldTime();
+		double TimeLeft = TotalTime_Match - GetWorldTime_Server();
 
 		int CurrentCountdown = FMath::CeilToInt(TimeLeft);
 
@@ -57,26 +93,17 @@ void APeackPlayerController::CreateWidget_PlayerState()
 	}
 }
 
+
+
 void APeackPlayerController::UpdateText_Countdown(int TimeLeft)
 {
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(
-			-1,
-			4.0f,
-			FColor::Blue,
-			TEXT("UpdateText_Countdown")
-		);
-	}
-
-
-
 	if (Widget_PlayerState)
 	{
 		Widget_PlayerState->UpdateText_Countdown(TimeLeft);
 	}
 }
 
+// Local
 double APeackPlayerController::GetWorldTime() const
 {
 	UWorld* World = GetWorld();
@@ -86,6 +113,11 @@ double APeackPlayerController::GetWorldTime() const
 	}
 	
 	return World->GetTimeSeconds();
+}
+
+double APeackPlayerController::GetWorldTime_Server() const
+{
+	return GetWorldTime() + Delta_Client_Server;
 }
 
 
