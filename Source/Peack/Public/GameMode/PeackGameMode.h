@@ -6,9 +6,11 @@
 #include "GameFramework/GameMode.h"
 #include "PeackGameMode.generated.h"
 
-/**
- * 
- */
+namespace MatchState
+{
+	extern PEACK_API const FName ShowResult;
+}
+
 UCLASS()
 class PEACK_API APeackGameMode : public AGameMode
 {

@@ -11,6 +11,12 @@
 
 #include "Controller/PeackPlayerController.h"
 
+
+namespace MatchState
+{
+	const FName ShowResult = FName(TEXT("ShowResult"));
+}
+
 void APeackGameMode::BeginPlay()
 {
 	Super::BeginPlay();
