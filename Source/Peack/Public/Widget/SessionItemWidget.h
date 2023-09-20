@@ -22,6 +22,9 @@ class PEACK_API USessionItemWidget :
 public: // Function
 	virtual bool Initialize() override;
 
+protected: // Function
+	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+
 private: // Function
 
 	UFUNCTION()

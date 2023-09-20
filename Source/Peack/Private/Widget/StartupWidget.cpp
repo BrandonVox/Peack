@@ -7,7 +7,11 @@
 
 #include "Components/TextBlock.h"
 
+#include "Components/ListView.h"
+
 #include "Subsystem/MultiplayerSubsystem.h"
+
+#include "Object/SessionItemObject.h"
 
 bool UStartupWidget::Initialize()
 {
@@ -58,8 +62,6 @@ bool UStartupWidget::Initialize()
         );
 
     }
-
-
 
     return true;
 }
@@ -142,6 +144,18 @@ void UStartupWidget::InputMode_Game()
 void UStartupWidget::OnClickButton_FindSessions()
 {
     ShowNotify(TEXT("OnClickButton_FindSessions"), FLinearColor::Gray);
+
+    if (ListView_SessionList)
+    {
+        USessionItemObject* NewSessionItemObject = NewObject<USessionItemObject>();
+        if (NewSessionItemObject)
+        {
+            NewSessionItemObject->SessionId = TEXT("TEST SESSION ID");
+            NewSessionItemObject->CreatedBy = TEXT("TEST CREATED BY");
+
+            ListView_SessionList->AddItem(NewSessionItemObject);
+        }
+    }
 }
 
 void UStartupWidget::OnClickButton_CreateSession()
