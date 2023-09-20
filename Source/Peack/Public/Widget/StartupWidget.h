@@ -11,6 +11,8 @@ class UTextBlock;
 
 class UMultiplayerSubsystem;
 
+class UListView;
+
 UCLASS()
 class PEACK_API UStartupWidget : public UUserWidget
 {
@@ -46,6 +48,9 @@ private: // Function
 private: // Property
 	UPROPERTY()
 	TObjectPtr<UMultiplayerSubsystem> MultiplayerSubsystem;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UListView> ListView_SessionList;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> Button_FindSessions;

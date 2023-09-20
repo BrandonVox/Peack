@@ -4,13 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+
+#include "Blueprint/IUserObjectListEntry.h"
+
 #include "SessionItemWidget.generated.h"
 
 class UButton;
 class UTextBlock;
 
 UCLASS()
-class PEACK_API USessionItemWidget : public UUserWidget
+class PEACK_API USessionItemWidget : 
+	public UUserWidget,
+	public IUserObjectListEntry
 {
 	GENERATED_BODY()
 	
