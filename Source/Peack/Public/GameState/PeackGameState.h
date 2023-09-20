@@ -14,11 +14,14 @@ class PEACK_API APeackGameState : public AGameState
 	GENERATED_BODY()
 
 public: // Function
+
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
+
 	APeackGameState();
 
 	void UpdateMVP(APeackPlayerState* InstigatorPlayerState);
 
 public: // Property
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	TObjectPtr<APeackPlayerState> CurrentMVP;
 };

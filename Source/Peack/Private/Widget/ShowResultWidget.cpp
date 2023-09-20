@@ -1,5 +1,13 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Widget/ShowResultWidget.h"
 
+#include "Components/TextBlock.h"
+
+void UShowResultWidget::UpdateText_WinnerName(const FString& WinnerNameString)
+{
+	if (Text_WinnerName)
+	{
+		Text_WinnerName->SetText(FText::FromString(WinnerNameString));
+	}
+}

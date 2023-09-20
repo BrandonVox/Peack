@@ -15,6 +15,11 @@
 
 #include "GameMode/PeackGameMode.h"
 
+#include "Kismet/GameplayStatics.h"
+#include "GameState/PeackGameState.h"
+
+
+
 void APeackPlayerController::ToggleText_MVP(bool bVisible)
 {
 	if (Widget_PlayerState)
@@ -113,6 +118,29 @@ void APeackPlayerController::HandleMatchState(const FName GivenMatchState)
 			Widget_PlayerState->RemoveFromParent();
 		}
 		CreateWidget_ShowResult();
+		ShowWinnerName();
+	}
+}
+
+void APeackPlayerController::UpdateText_WinnerName(const FString& WinnerNameString)
+{
+	if (Widget_ShowResult)
+	{
+		Widget_ShowResult->UpdateText_WinnerName(WinnerNameString);
+	}
+}
+
+// Server, Client
+void APeackPlayerController::ShowWinnerName()
+{
+	if (APeackGameState* PeackGameState = Cast<APeackGameState>(UGameplayStatics::GetGameState(this)))
+	{
+		APeackPlayerState* PlayerState_Winner = PeackGameState->CurrentMVP;
+
+		if (PlayerState_Winner)
+		{
+			UpdateText_WinnerName(PlayerState_Winner->GetPlayerName());
+		}
 	}
 }
 
@@ -178,6 +206,8 @@ void APeackPlayerController::Tick(float DeltaSeconds)
 		UpdateCountdown();
 	}
 }
+
+
 
 void APeackPlayerController::UpdateCountdown()
 {

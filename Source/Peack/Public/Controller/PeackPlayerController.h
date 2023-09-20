@@ -69,6 +69,10 @@ public: // Function
 
 private: // Function
 
+	void UpdateText_WinnerName(const FString& WinnerNameString);
+
+	void ShowWinnerName();
+
 	void UpdateCountdown();
 
 	void UpdateCountdown_Warmup();

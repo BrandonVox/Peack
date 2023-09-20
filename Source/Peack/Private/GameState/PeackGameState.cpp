@@ -5,6 +5,15 @@
 
 #include "PlayerState/PeackPlayerState.h"
 
+#include "Net/UnrealNetwork.h"
+
+void APeackGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(APeackGameState, CurrentMVP);
+}
+
 APeackGameState::APeackGameState()
 {
 	NetUpdateFrequency = 10.0f;
