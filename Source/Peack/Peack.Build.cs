@@ -13,8 +13,11 @@ public class Peack : ModuleRules
 			"CoreUObject",
 			"Engine",
 			"InputCore",
-			"EnhancedInput"
-		});
+			"EnhancedInput",
+			"OnlineSubsystem",
+            "OnlineSubsystemSteam",
+            "OnlineSubsystemNull"
+        });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
