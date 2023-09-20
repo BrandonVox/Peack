@@ -7,6 +7,8 @@
 
 #include "Components/TextBlock.h"
 
+#include "Subsystem/MultiplayerSubsystem.h"
+
 bool UStartupWidget::Initialize()
 {
     if (Super::Initialize() == false)
@@ -74,4 +76,13 @@ void UStartupWidget::OnClickButton_FindSessions()
 void UStartupWidget::OnClickButton_CreateSession()
 {
     ShowNotify(TEXT("OnClickButton_CreateSession"), FLinearColor::Blue);
+
+    if (UGameInstance* MyGameInstance = GetGameInstance())
+    {
+        UMultiplayerSubsystem* MS = MyGameInstance->GetSubsystem<UMultiplayerSubsystem>();
+        if (MS)
+        {
+            MS->CreateSession();
+        }
+    }
 }
