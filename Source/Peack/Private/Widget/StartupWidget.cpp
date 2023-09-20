@@ -13,6 +13,8 @@
 
 #include "Object/SessionItemObject.h"
 
+#include "OnlineSessionSettings.h"
+
 bool UStartupWidget::Initialize()
 {
     if (Super::Initialize() == false)
@@ -61,10 +63,17 @@ bool UStartupWidget::Initialize()
             &UStartupWidget::OnDestroySessionDone
         );
 
+        MultiplayerSubsystem->FindSessionsDoneDelegate.AddUObject(
+            this,
+            &UStartupWidget::OnFindSessionsDone
+        );
+
     }
 
     return true;
 }
+
+
 
 void UStartupWidget::OnCreateSessionDone(bool bWasSuccessful)
 {
@@ -100,6 +109,8 @@ void UStartupWidget::OnDestroySessionDone(bool bWasSuccessful)
         ShowNotify(TEXT("Destroy Existed Session Failed!"), FLinearColor::Red);
     }
 }
+
+
 
 void UStartupWidget::ShowNotify(const FString& NotifyString, const FLinearColor& NotifyColor)
 {
@@ -143,16 +154,56 @@ void UStartupWidget::InputMode_Game()
 
 void UStartupWidget::OnClickButton_FindSessions()
 {
+    if (Button_FindSessions)
+    {
+        Button_FindSessions->SetIsEnabled(false);
+    }
+
     ShowNotify(TEXT("OnClickButton_FindSessions"), FLinearColor::Gray);
 
-    if (ListView_SessionList)
+    if (MultiplayerSubsystem)
+    {
+        MultiplayerSubsystem->FindSessions();
+    }
+
+    // multiplayer subsystem 
+    // find session
+
+
+}
+
+void UStartupWidget::OnFindSessionsDone(bool bWasSuccessful, const TArray<FOnlineSessionSearchResult>& SearchResults)
+{
+    if (Button_FindSessions)
+    {
+        Button_FindSessions->SetIsEnabled(true);
+    }
+
+    if (bWasSuccessful)
+    {
+        ShowNotify(TEXT("Found Sessions!"), FLinearColor::Green);
+        UpdateListView_SessionList(SearchResults);
+    }
+    else
+    {
+        ShowNotify(TEXT("Find Sessions Failed!"), FLinearColor::Red);
+    }
+}
+
+void UStartupWidget::UpdateListView_SessionList(const TArray<FOnlineSessionSearchResult>& SearchResults)
+{
+    if (ListView_SessionList == nullptr)
+    {
+        return;
+    }
+
+    for (const FOnlineSessionSearchResult& SearchResult : SearchResults)
     {
         USessionItemObject* NewSessionItemObject = NewObject<USessionItemObject>();
         if (NewSessionItemObject)
         {
-            NewSessionItemObject->SessionId = TEXT("TEST SESSION ID");
-            NewSessionItemObject->CreatedBy = TEXT("TEST CREATED BY");
-
+            NewSessionItemObject->SessionId = SearchResult.GetSessionIdStr();
+            NewSessionItemObject->CreatedBy = SearchResult.Session.OwningUserName;
             ListView_SessionList->AddItem(NewSessionItemObject);
         }
     }

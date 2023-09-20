@@ -14,6 +14,13 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FCreateSessionDoneDelegate, bool bWasSuccess
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FDestroySessionDoneDelegate, bool bWasSuccessful);
 
+DECLARE_MULTICAST_DELEGATE_TwoParams(
+	FFindSessionsDoneDelegate,
+	bool bWasSuccessful,
+	const TArray<FOnlineSessionSearchResult>& SearchResults
+);
+
+
 UCLASS()
 class PEACK_API UMultiplayerSubsystem : public UGameInstanceSubsystem
 {
@@ -25,17 +32,26 @@ public: // Function
 
 	void CreateSession();
 
+	void FindSessions();
+
 private: // Function
 	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
 
 	void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
+
+	void OnFindSessionsComplete(bool bWasSuccessful);
 	
 public: // Property
 	FCreateSessionDoneDelegate CreateSessionDoneDelegate;
 	FDestroySessionDoneDelegate DestroySessionDoneDelegate;
 
+	FFindSessionsDoneDelegate FindSessionsDoneDelegate;
+
 private: // Property
 	IOnlineSessionPtr SessionInterface;
+
+
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
 
 	// Listen Server
 	FString Path_FirstMap = TEXT("/Game/Map/FirstMap?listen");

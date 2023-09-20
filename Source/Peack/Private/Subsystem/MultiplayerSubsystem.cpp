@@ -28,6 +28,12 @@ void UMultiplayerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 			&UMultiplayerSubsystem::OnDestroySessionComplete
 		);
 
+		SessionInterface->OnFindSessionsCompleteDelegates.AddUObject
+		(
+			this,
+			&UMultiplayerSubsystem::OnFindSessionsComplete
+		);
+
 	}
 }
 
@@ -66,6 +72,37 @@ void UMultiplayerSubsystem::CreateSession()
 	);
 }
 
+void UMultiplayerSubsystem::FindSessions()
+{
+	if (!SessionInterface.IsValid())
+	{
+		return;
+	}
+
+	SessionSearch = MakeShareable(new FOnlineSessionSearch());
+
+	if (!SessionSearch.IsValid())
+	{
+		return;
+	}
+
+	SessionSearch->bIsLanQuery = false;
+	SessionSearch->MaxSearchResults = 10'000;
+
+	SessionSearch->QuerySettings.Set
+	(
+		SEARCH_PRESENCE,
+		true,
+		EOnlineComparisonOp::Equals
+	);
+
+	SessionInterface->FindSessions
+	(
+		0,
+		SessionSearch.ToSharedRef()
+	);
+}
+
 void UMultiplayerSubsystem::OnCreateSessionComplete(FName SessionName, bool bWasSuccessful)
 {
 	if (CreateSessionDoneDelegate.IsBound())
@@ -88,4 +125,18 @@ void UMultiplayerSubsystem::OnDestroySessionComplete(FName SessionName, bool bWa
 	{
 		DestroySessionDoneDelegate.Broadcast(bWasSuccessful);
 	}
+}
+
+void UMultiplayerSubsystem::OnFindSessionsComplete(bool bWasSuccessful)
+{
+
+	if (SessionSearch.IsValid())
+	{
+		if (FindSessionsDoneDelegate.IsBound())
+		{
+			FindSessionsDoneDelegate.Broadcast(bWasSuccessful, SessionSearch->SearchResults);
+		}
+	}
+
+
 }

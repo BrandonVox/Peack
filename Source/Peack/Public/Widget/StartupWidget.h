@@ -22,9 +22,18 @@ public: // Function
 	virtual bool Initialize() override;
 
 private: // Function
+
+	void UpdateListView_SessionList(const TArray<FOnlineSessionSearchResult>& SearchResults);
+
 	void OnCreateSessionDone(bool bWasSuccessful);
 
 	void OnDestroySessionDone(bool bWasSuccessful);
+
+	void OnFindSessionsDone(
+		bool bWasSuccessful,
+		const TArray<FOnlineSessionSearchResult>& SearchResults
+	);
+
 
 	void ShowNotify
 	(
