@@ -16,6 +16,17 @@ class PEACK_API UStartupWidget : public UUserWidget
 public: // Function
 	virtual bool Initialize() override;
 
+private: // Function
+	void InputMode_UI();
+
+	UFUNCTION()
+	void OnClickButton_FindSessions();
+
+	UFUNCTION()
+	void OnClickButton_CreateSession();
+
+
+
 private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> Button_FindSessions;
