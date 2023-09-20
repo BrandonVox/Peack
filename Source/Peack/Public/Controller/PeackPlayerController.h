@@ -23,6 +23,8 @@ class PEACK_API APeackPlayerController : public APlayerController
 
 public: // Function
 
+	void ToggleText_MVP(bool bVisible);
+
 	void GameModeSendInformations(
 		const double SLT,
 		const FName GivenMatchState,

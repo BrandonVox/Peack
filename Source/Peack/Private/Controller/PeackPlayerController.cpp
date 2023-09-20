@@ -15,6 +15,14 @@
 
 #include "GameMode/PeackGameMode.h"
 
+void APeackPlayerController::ToggleText_MVP(bool bVisible)
+{
+	if (Widget_PlayerState)
+	{
+		Widget_PlayerState->ToggleText_MVP(bVisible);
+	}
+}
+
 // Server
 void APeackPlayerController::GameModeSendInformations(
 	const double SLT,

@@ -14,6 +14,13 @@ class PEACK_API APeackPlayerState : public APlayerState
 	GENERATED_BODY()
 
 public: // Function
+
+	void UpdateMVP(const bool bValue);
+
+	UFUNCTION(Client, Reliable)
+	void Client_UpdateMVP(const bool bValue);
+
+
 	void SetDeath(const float NewDeath);
 
 	float GetDeath() const

@@ -26,12 +26,15 @@ void APeackGameState::UpdateMVP(APeackPlayerState* InstigatorPlayerState)
 
 	if (CurrentMVP == nullptr)
 	{
+		InstigatorPlayerState->UpdateMVP(true);
 		CurrentMVP = InstigatorPlayerState;
 		return;
 	}
 
 	if (InstigatorPlayerState->GetScore() > CurrentMVP->GetScore())
 	{
+		InstigatorPlayerState->UpdateMVP(true);
+		CurrentMVP->UpdateMVP(false);
 		CurrentMVP = InstigatorPlayerState;
 	}
 }

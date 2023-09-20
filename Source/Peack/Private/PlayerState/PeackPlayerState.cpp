@@ -7,6 +7,25 @@
 
 #include "Net/UnrealNetwork.h"
 
+// Server
+void APeackPlayerState::UpdateMVP(const bool bValue)
+{
+	Client_UpdateMVP(bValue);
+}
+
+// PC owning this player state
+void APeackPlayerState::Client_UpdateMVP_Implementation(const bool bValue) // Implementation
+{
+	if (PeackPlayerController == nullptr)
+	{
+		PeackPlayerController = Cast<APeackPlayerController>(GetOwningController());
+	}
+
+	if (PeackPlayerController)
+	{
+		PeackPlayerController->ToggleText_MVP(bValue);
+	}
+}
 
 void APeackPlayerState::SetDeath(const float NewDeath)
 {
