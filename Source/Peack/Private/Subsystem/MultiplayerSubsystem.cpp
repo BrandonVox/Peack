@@ -22,6 +22,12 @@ void UMultiplayerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 			&UMultiplayerSubsystem::OnCreateSessionComplete
 		);
 
+		SessionInterface->OnDestroySessionCompleteDelegates.AddUObject
+		(
+			this,
+			&UMultiplayerSubsystem::OnDestroySessionComplete
+		);
+
 	}
 }
 
@@ -42,6 +48,15 @@ void UMultiplayerSubsystem::CreateSession()
 	SessionSettings.bIsLANMatch = false;
 	SessionSettings.bIsDedicated = false;
 	SessionSettings.BuildUniqueId = 1;
+
+
+	// Destroy Existed Session
+	if(SessionInterface->GetNamedSession(NAME_GameSession))
+	{
+		SessionInterface->DestroySession(NAME_GameSession);
+		return;
+	}
+
 
 	SessionInterface->CreateSession
 	(
@@ -64,5 +79,13 @@ void UMultiplayerSubsystem::OnCreateSessionComplete(FName SessionName, bool bWas
 		{
 			World->ServerTravel(Path_FirstMap);
 		}
+	}
+}
+
+void UMultiplayerSubsystem::OnDestroySessionComplete(FName SessionName, bool bWasSuccessful)
+{
+	if (DestroySessionDoneDelegate.IsBound())
+	{
+		DestroySessionDoneDelegate.Broadcast(bWasSuccessful);
 	}
 }

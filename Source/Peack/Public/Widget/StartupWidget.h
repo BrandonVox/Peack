@@ -22,6 +22,8 @@ public: // Function
 private: // Function
 	void OnCreateSessionDone(bool bWasSuccessful);
 
+	void OnDestroySessionDone(bool bWasSuccessful);
+
 	void ShowNotify
 	(
 		const FString& NotifyString,

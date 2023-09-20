@@ -42,13 +42,21 @@ bool UStartupWidget::Initialize()
         );
     }
 
-    // bind multiplayer subsystem delegates
+    /*
+    * Bind Multiplayer Subsystem's Delegates
+    */
     if (MultiplayerSubsystem)
     {
         MultiplayerSubsystem->CreateSessionDoneDelegate.AddUObject(
             this,
             &UStartupWidget::OnCreateSessionDone
         );
+
+        MultiplayerSubsystem->DestroySessionDoneDelegate.AddUObject(
+            this,
+            &UStartupWidget::OnDestroySessionDone
+        );
+
     }
 
 
@@ -60,12 +68,34 @@ void UStartupWidget::OnCreateSessionDone(bool bWasSuccessful)
 {
     if (bWasSuccessful)
     {
-        ShowNotify(TEXT("Create Session Done!"), FLinearColor::Green);
+        ShowNotify(TEXT("Create Session Succecced!"), FLinearColor::Green);
         InputMode_Game();
     }
     else
     {
+        if (Button_CreateSession)
+        {
+            Button_CreateSession->SetIsEnabled(true);
+        }
+
         ShowNotify(TEXT("Create Session Failed!"), FLinearColor::Red);
+    }
+}
+
+void UStartupWidget::OnDestroySessionDone(bool bWasSuccessful)
+{
+    if (Button_CreateSession)
+    {
+        Button_CreateSession->SetIsEnabled(true);
+    }
+
+    if (bWasSuccessful)
+    {
+        ShowNotify(TEXT("Destroy Existed Session Succecced!"), FLinearColor::Green);
+    }
+    else
+    {
+        ShowNotify(TEXT("Destroy Existed Session Failed!"), FLinearColor::Red);
     }
 }
 
@@ -116,6 +146,11 @@ void UStartupWidget::OnClickButton_FindSessions()
 
 void UStartupWidget::OnClickButton_CreateSession()
 {
+    if (Button_CreateSession)
+    {
+        Button_CreateSession->SetIsEnabled(false);
+    }
+
     ShowNotify(TEXT("OnClickButton_CreateSession"), FLinearColor::Blue);
 
     if (MultiplayerSubsystem)

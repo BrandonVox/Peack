@@ -12,6 +12,8 @@
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FCreateSessionDoneDelegate, bool bWasSuccessful);
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FDestroySessionDoneDelegate, bool bWasSuccessful);
+
 UCLASS()
 class PEACK_API UMultiplayerSubsystem : public UGameInstanceSubsystem
 {
@@ -25,9 +27,12 @@ public: // Function
 
 private: // Function
 	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
+
+	void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
 	
 public: // Property
 	FCreateSessionDoneDelegate CreateSessionDoneDelegate;
+	FDestroySessionDoneDelegate DestroySessionDoneDelegate;
 
 private: // Property
 	IOnlineSessionPtr SessionInterface;
