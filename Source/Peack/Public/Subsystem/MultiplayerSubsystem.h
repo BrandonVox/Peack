@@ -9,12 +9,9 @@
 
 #include "MultiplayerSubsystem.generated.h"
 
-/**
- * 
- */
 
-// // Game Instance
-// 
+DECLARE_MULTICAST_DELEGATE_OneParam(FCreateSessionDoneDelegate, bool bWasSuccessful);
+
 UCLASS()
 class PEACK_API UMultiplayerSubsystem : public UGameInstanceSubsystem
 {
@@ -29,6 +26,9 @@ public: // Function
 private: // Function
 	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
 	
+public: // Property
+	FCreateSessionDoneDelegate CreateSessionDoneDelegate;
+
 private: // Property
 	IOnlineSessionPtr SessionInterface;
 

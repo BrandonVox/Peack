@@ -53,6 +53,11 @@ void UMultiplayerSubsystem::CreateSession()
 
 void UMultiplayerSubsystem::OnCreateSessionComplete(FName SessionName, bool bWasSuccessful)
 {
+	if (CreateSessionDoneDelegate.IsBound())
+	{
+		CreateSessionDoneDelegate.Broadcast(bWasSuccessful);
+	}
+
 	if (bWasSuccessful)
 	{
 		if (UWorld* World = GetWorld())

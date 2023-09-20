@@ -9,6 +9,8 @@
 class UButton;
 class UTextBlock;
 
+class UMultiplayerSubsystem;
+
 UCLASS()
 class PEACK_API UStartupWidget : public UUserWidget
 {
@@ -18,6 +20,7 @@ public: // Function
 	virtual bool Initialize() override;
 
 private: // Function
+	void OnCreateSessionDone(bool bWasSuccessful);
 
 	void ShowNotify
 	(
@@ -28,6 +31,7 @@ private: // Function
 
 
 	void InputMode_UI();
+	void InputMode_Game();
 
 	UFUNCTION()
 	void OnClickButton_FindSessions();
@@ -37,7 +41,10 @@ private: // Function
 
 
 
-private:
+private: // Property
+	UPROPERTY()
+	TObjectPtr<UMultiplayerSubsystem> MultiplayerSubsystem;
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> Button_FindSessions;
 

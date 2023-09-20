@@ -16,6 +16,12 @@ bool UStartupWidget::Initialize()
         return false;
     }
 
+    if (UGameInstance* MyGameInstance = GetGameInstance())
+    {
+        MultiplayerSubsystem = MyGameInstance->GetSubsystem<UMultiplayerSubsystem>();
+    }
+
+
     InputMode_UI();
 
     // lien ket onclick
@@ -36,9 +42,31 @@ bool UStartupWidget::Initialize()
         );
     }
 
+    // bind multiplayer subsystem delegates
+    if (MultiplayerSubsystem)
+    {
+        MultiplayerSubsystem->CreateSessionDoneDelegate.AddUObject(
+            this,
+            &UStartupWidget::OnCreateSessionDone
+        );
+    }
+
 
 
     return true;
+}
+
+void UStartupWidget::OnCreateSessionDone(bool bWasSuccessful)
+{
+    if (bWasSuccessful)
+    {
+        ShowNotify(TEXT("Create Session Done!"), FLinearColor::Green);
+        InputMode_Game();
+    }
+    else
+    {
+        ShowNotify(TEXT("Create Session Failed!"), FLinearColor::Red);
+    }
 }
 
 void UStartupWidget::ShowNotify(const FString& NotifyString, const FLinearColor& NotifyColor)
@@ -68,6 +96,19 @@ void UStartupWidget::InputMode_UI()
     }
 }
 
+void UStartupWidget::InputMode_Game()
+{
+    if (APlayerController* PC = GetOwningPlayer())
+    {
+        bIsFocusable = false;
+
+        PC->SetShowMouseCursor(false);
+
+        FInputModeGameOnly InputMode_Game;
+        PC->SetInputMode(InputMode_Game);
+    }
+}
+
 void UStartupWidget::OnClickButton_FindSessions()
 {
     ShowNotify(TEXT("OnClickButton_FindSessions"), FLinearColor::Gray);
@@ -77,12 +118,8 @@ void UStartupWidget::OnClickButton_CreateSession()
 {
     ShowNotify(TEXT("OnClickButton_CreateSession"), FLinearColor::Blue);
 
-    if (UGameInstance* MyGameInstance = GetGameInstance())
+    if (MultiplayerSubsystem)
     {
-        UMultiplayerSubsystem* MS = MyGameInstance->GetSubsystem<UMultiplayerSubsystem>();
-        if (MS)
-        {
-            MS->CreateSession();
-        }
+        MultiplayerSubsystem->CreateSession();
     }
 }
