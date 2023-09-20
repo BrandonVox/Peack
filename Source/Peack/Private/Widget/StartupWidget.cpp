@@ -5,6 +5,8 @@
 
 #include "Components/Button.h"
 
+#include "Components/TextBlock.h"
+
 bool UStartupWidget::Initialize()
 {
     if (Super::Initialize() == false)
@@ -37,10 +39,24 @@ bool UStartupWidget::Initialize()
     return true;
 }
 
+void UStartupWidget::ShowNotify(const FString& NotifyString, const FLinearColor& NotifyColor)
+{
+    PlayAnimation(ShowNotifyAnimation);
+
+    if (Text_Notify)
+    {
+        Text_Notify->SetText(FText::FromString(NotifyString));
+        Text_Notify->SetColorAndOpacity(NotifyColor);
+    }
+}
+
 void UStartupWidget::InputMode_UI()
 {
     if (APlayerController* PC = GetOwningPlayer())
     {
+
+        bIsFocusable = true;
+
         PC->SetShowMouseCursor(true);
 
         FInputModeUIOnly InputMode_UI;
@@ -52,27 +68,10 @@ void UStartupWidget::InputMode_UI()
 
 void UStartupWidget::OnClickButton_FindSessions()
 {
-    if (GEngine)
-    {
-        GEngine->AddOnScreenDebugMessage(
-            -1,
-            3.0f,
-            FColor::Purple,
-            TEXT("OnClickButton_FindSessions")
-        );
-    }
-
+    ShowNotify(TEXT("OnClickButton_FindSessions"), FLinearColor::Gray);
 }
 
 void UStartupWidget::OnClickButton_CreateSession()
 {
-    if (GEngine)
-    {
-        GEngine->AddOnScreenDebugMessage(
-            -1,
-            3.0f,
-            FColor::Green,
-            TEXT("OnClickButton_CreateSession")
-        );
-    }
+    ShowNotify(TEXT("OnClickButton_CreateSession"), FLinearColor::Blue);
 }

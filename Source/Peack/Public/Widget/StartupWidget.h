@@ -7,6 +7,7 @@
 #include "StartupWidget.generated.h"
 
 class UButton;
+class UTextBlock;
 
 UCLASS()
 class PEACK_API UStartupWidget : public UUserWidget
@@ -17,6 +18,15 @@ public: // Function
 	virtual bool Initialize() override;
 
 private: // Function
+
+	void ShowNotify
+	(
+		const FString& NotifyString,
+		const FLinearColor& NotifyColor
+	);
+
+
+
 	void InputMode_UI();
 
 	UFUNCTION()
@@ -33,4 +43,10 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> Button_CreateSession;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> Text_Notify;
+
+	UPROPERTY(meta = (BindWidgetAnim), Transient)
+	TObjectPtr<UWidgetAnimation> ShowNotifyAnimation;
 };
