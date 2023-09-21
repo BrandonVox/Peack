@@ -68,6 +68,10 @@ bool UStartupWidget::Initialize()
             &UStartupWidget::OnFindSessionsDone
         );
 
+        MultiplayerSubsystem->JoinSessionDoneDelegate.AddUObject(
+            this,
+            &UStartupWidget::OnJoinSessionDone
+        );
     }
 
     return true;
@@ -190,6 +194,19 @@ void UStartupWidget::OnFindSessionsDone(bool bWasSuccessful, const TArray<FOnlin
     }
 }
 
+void UStartupWidget::OnJoinSessionDone(bool bWasSuccessful)
+{
+    if (bWasSuccessful)
+    {
+        ShowNotify(TEXT("Join Session Succecced!"), FLinearColor::Green);
+        InputMode_Game();
+    }
+    else
+    {
+        ShowNotify(TEXT("Join Session Failed!"), FLinearColor::Red);
+    }
+}
+
 void UStartupWidget::UpdateListView_SessionList(const TArray<FOnlineSessionSearchResult>& SearchResults)
 {
     if (ListView_SessionList == nullptr)
@@ -197,6 +214,10 @@ void UStartupWidget::UpdateListView_SessionList(const TArray<FOnlineSessionSearc
         return;
     }
 
+    // Clear all Items
+    ListView_SessionList->ClearListItems();
+
+    // Add Items to List
     for (const FOnlineSessionSearchResult& SearchResult : SearchResults)
     {
         USessionItemObject* NewSessionItemObject = NewObject<USessionItemObject>();
@@ -204,6 +225,7 @@ void UStartupWidget::UpdateListView_SessionList(const TArray<FOnlineSessionSearc
         {
             NewSessionItemObject->SessionId = SearchResult.GetSessionIdStr();
             NewSessionItemObject->CreatedBy = SearchResult.Session.OwningUserName;
+            NewSessionItemObject->SearchResult = SearchResult;
             ListView_SessionList->AddItem(NewSessionItemObject);
         }
     }

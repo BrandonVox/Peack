@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+
+#include "OnlineSessionSettings.h"
+
 #include "SessionItemObject.generated.h"
 
 /**
@@ -17,4 +20,6 @@ class PEACK_API USessionItemObject : public UObject
 public: // Property
 	FString SessionId;
 	FString CreatedBy;
+
+	FOnlineSessionSearchResult SearchResult;
 };

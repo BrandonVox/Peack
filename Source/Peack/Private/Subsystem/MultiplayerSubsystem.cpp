@@ -6,6 +6,8 @@
 #include "OnlineSubsystem.h"
 #include "OnlineSessionSettings.h"
 
+#include "Kismet/GameplayStatics.h"
+
 void UMultiplayerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	if (IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get())
@@ -32,6 +34,12 @@ void UMultiplayerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 		(
 			this,
 			&UMultiplayerSubsystem::OnFindSessionsComplete
+		);
+
+		SessionInterface->OnJoinSessionCompleteDelegates.AddUObject
+		(
+			this,
+			&UMultiplayerSubsystem::OnJoinSessionComplete
 		);
 
 	}
@@ -103,6 +111,14 @@ void UMultiplayerSubsystem::FindSessions()
 	);
 }
 
+void UMultiplayerSubsystem::JoinSession(const FOnlineSessionSearchResult& SearchResult)
+{
+	if (SessionInterface.IsValid())
+	{
+		SessionInterface->JoinSession(0, NAME_GameSession, SearchResult);
+	}
+}
+
 void UMultiplayerSubsystem::OnCreateSessionComplete(FName SessionName, bool bWasSuccessful)
 {
 	if (CreateSessionDoneDelegate.IsBound())
@@ -139,4 +155,29 @@ void UMultiplayerSubsystem::OnFindSessionsComplete(bool bWasSuccessful)
 	}
 
 
+}
+
+void UMultiplayerSubsystem::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type JoinResult)
+{
+	if (!SessionInterface.IsValid())
+	{
+		return;
+	}
+
+	
+
+	// input mode UI -> Game
+	if (JoinSessionDoneDelegate.IsBound())
+	{
+		JoinSessionDoneDelegate.Broadcast(JoinResult == EOnJoinSessionCompleteResult::Success);
+	}
+
+
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		FString ServerAddress;
+		SessionInterface->GetResolvedConnectString(NAME_GameSession, ServerAddress);
+
+		PC->ClientTravel(ServerAddress, TRAVEL_Absolute);
+	}
 }

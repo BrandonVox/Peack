@@ -12,8 +12,12 @@
 class UButton;
 class UTextBlock;
 
+class UMultiplayerSubsystem;
+
+class USessionItemObject;
+
 UCLASS()
-class PEACK_API USessionItemWidget : 
+class PEACK_API USessionItemWidget: 
 	public UUserWidget,
 	public IUserObjectListEntry
 {
@@ -31,6 +35,12 @@ private: // Function
 	void OnClickButton_Join();
 
 private: // Property
+	UPROPERTY()
+	TObjectPtr<USessionItemObject> SessionItemObject;
+
+	UPROPERTY()
+	TObjectPtr<UMultiplayerSubsystem> MultiplayerSubsystem;
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> Button_Join;
 

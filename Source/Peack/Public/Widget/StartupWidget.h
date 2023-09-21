@@ -34,6 +34,8 @@ private: // Function
 		const TArray<FOnlineSessionSearchResult>& SearchResults
 	);
 
+	void OnJoinSessionDone(bool bWasSuccessful);
+
 
 	void ShowNotify
 	(

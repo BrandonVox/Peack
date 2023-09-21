@@ -8,11 +8,18 @@
 
 #include "Object/SessionItemObject.h"
 
+#include "Subsystem/MultiplayerSubsystem.h"
+
 bool USessionItemWidget::Initialize()
 {
     if (Super::Initialize() == false)
     {
         return false;
+    }
+
+    if (UGameInstance* MyGameInstance = GetGameInstance())
+    {
+        MultiplayerSubsystem = MyGameInstance->GetSubsystem<UMultiplayerSubsystem>();
     }
 
     if (Button_Join)
@@ -29,7 +36,7 @@ bool USessionItemWidget::Initialize()
 // function nay duoc goi, khi list view add item 
 void USessionItemWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
-    if (USessionItemObject* SessionItemObject = Cast<USessionItemObject>(ListItemObject))
+    if (SessionItemObject = Cast<USessionItemObject>(ListItemObject))
     {
         if (Text_SessionId)
         {
@@ -45,5 +52,13 @@ void USessionItemWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 
 void USessionItemWidget::OnClickButton_Join()
 {
+    if (Button_Join)
+    {
+        Button_Join->SetIsEnabled(false);
+    }
 
+    if (MultiplayerSubsystem && SessionItemObject)
+    {
+        MultiplayerSubsystem->JoinSession(SessionItemObject->SearchResult);
+    }
 }

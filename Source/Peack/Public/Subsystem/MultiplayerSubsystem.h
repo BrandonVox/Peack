@@ -20,6 +20,8 @@ DECLARE_MULTICAST_DELEGATE_TwoParams(
 	const TArray<FOnlineSessionSearchResult>& SearchResults
 );
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FJoinSessionDoneDelegate, bool bWasSuccessful);
+
 
 UCLASS()
 class PEACK_API UMultiplayerSubsystem : public UGameInstanceSubsystem
@@ -34,18 +36,26 @@ public: // Function
 
 	void FindSessions();
 
+	// Search result 
+	void JoinSession(const FOnlineSessionSearchResult& SearchResult);
+
+
 private: // Function
 	void OnCreateSessionComplete(FName SessionName, bool bWasSuccessful);
 
 	void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
 
 	void OnFindSessionsComplete(bool bWasSuccessful);
+
+	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type JoinResult);
 	
 public: // Property
 	FCreateSessionDoneDelegate CreateSessionDoneDelegate;
 	FDestroySessionDoneDelegate DestroySessionDoneDelegate;
 
 	FFindSessionsDoneDelegate FindSessionsDoneDelegate;
+
+	FJoinSessionDoneDelegate JoinSessionDoneDelegate;
 
 private: // Property
 	IOnlineSessionPtr SessionInterface;
